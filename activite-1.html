@@ -1,0 +1,217 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AlgoScratch — Premiers pas · Activité 1</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="AlgoScratch accueil">
+      <span class="brand-mark">AS</span>
+      <span>AlgoScratch</span>
+    </a>
+
+    <nav class="main-nav" aria-label="Navigation principale">
+      <a href="index.html">Accueil</a>
+      <a href="index.html#parcours">Parcours</a>
+      <a href="activite-1.html">Premiers pas</a>
+    </nav>
+
+    <div class="session-pill" id="session-pill">Mode découverte</div>
+  </header>
+
+  <main class="page-main">
+    <section class="learning-layout">
+      <aside class="course-sidebar" aria-label="Arborescence du cours">
+        <button class="sidebar-toggle" id="sidebar-toggle" type="button" aria-expanded="true">
+          <span>Masquer</span>
+        </button>
+
+        <nav class="course-tree">
+          <h2>Parcours</h2>
+          <ol>
+            <li class="tree-home">
+              <a href="index.html">Accueil</a>
+            </li>
+            <li class="tree-group active">
+              <span>I</span>
+              <div>
+                <strong>Activités Scratch</strong>
+                <span class="tree-section-title active-section">Premiers pas</span>
+                <a class="tree-subitem active" href="activite-1.html">Activité 1</a>
+                <a class="tree-subitem" href="activite-2.html">Activité 2</a>
+                <a class="tree-subitem" href="activite-3.html">Activité 3</a>
+              </div>
+            </li>
+            <li class="tree-group">
+              <span>II</span>
+              <div><strong>Énigmes Scratch</strong></div>
+            </li>
+            <li class="tree-group">
+              <span>III</span>
+              <div><strong>Activités sur feuilles</strong></div>
+            </li>
+            <li class="tree-group">
+              <span>IV</span>
+              <div><strong>Énigmes sur feuilles</strong></div>
+            </li>
+          </ol>
+        </nav>
+      </aside>
+
+      <div class="lesson-workspace">
+        <nav class="lesson-topbar" aria-label="Navigation de la leçon">
+          <ol class="breadcrumbs">
+            <li>Activités Scratch</li>
+            <li>Premiers pas</li>
+            <li>Activité 1</li>
+          </ol>
+
+          <div class="activity-stepper" aria-label="Activités du chapitre Premiers pas">
+            <a class="active" href="activite-1.html" aria-current="step">1</a>
+            <span></span>
+            <a href="activite-2.html">2</a>
+            <span></span>
+            <a href="activite-3.html">3</a>
+          </div>
+        </nav>
+
+        <article class="notebook-page">
+          <header class="lesson-header">
+            <div>
+              <p class="eyebrow">Partie I · Leçon 1</p>
+              <h2>Premiers pas</h2>
+            </div>
+            <span class="lesson-badge">Notebook Scratch</span>
+          </header>
+
+          <section class="cell cell-course">
+            <p class="cell-label">Objectif</p>
+            <h3>Déplacer le chat et construire son premier programme.</h3>
+            <p>
+              Dans cette activité, tu apprends à démarrer un script, remettre le lutin au point de départ,
+              choisir une direction, puis enchaîner plusieurs actions.
+            </p>
+          </section>
+
+          <section class="cell cell-activity">
+            <div class="cell-heading">
+              <div>
+                <p class="cell-label">Activité guidée</p>
+                <h3>Étape 1 · Fais avancer Scratch.</h3>
+              </div>
+            </div>
+
+            <p>
+              Commence avec les blocs <strong>quand le drapeau vert est cliqué</strong> et
+              <strong>avancer de 10</strong>. Si tu cliques plusieurs fois sur le drapeau vert,
+              Scratch avance plusieurs fois, mais il finit par rester coincé à droite de l’écran.
+            </p>
+
+            <div class="instruction-list">
+              <article>
+                <strong>Étape 2</strong>
+                <span>Commence toujours ton programme par les instructions suivantes :</span>
+                <ul>
+                  <li>Quand le drapeau vert est cliqué</li>
+                  <li>Aller à x = 0, y = 0</li>
+                  <li>S’orienter à 90° (vers la droite)</li>
+                  <li>Effacer tout</li>
+                  <li>Stylo en position d’écriture</li>
+                </ul>
+              </article>
+              <article>
+                <strong>Étape 3</strong>
+                <span>Construis ensuite ton premier programme :</span>
+                <ul>
+                  <li>Fais avancer Scratch de 50 pas</li>
+                  <li>Fais une pause d’une seconde</li>
+                  <li>Fais encore avancer Scratch de 50 pas, puis une pause</li>
+                  <li>Fais avancer Scratch de 50 pas une dernière fois</li>
+                </ul>
+              </article>
+            </div>
+
+            <div class="editor-guidance">
+              <strong>Avant de commencer :</strong>
+              si tu ne vois pas les blocs <em>effacer tout</em> et <em>stylo en position d’écriture</em>,
+              clique sur <em>Ajouter une extension</em> dans Scratch puis choisis <em>Stylo</em>.
+            </div>
+
+            <div class="project-save-panel" data-project-save-panel data-activity-id="activite-1">
+              <div>
+                <strong>Projet Scratch de cette activité</strong>
+                <span>Sauvegarde ton travail pour pouvoir le retrouver plus tard.</span>
+              </div>
+              <div class="project-save-actions">
+                <button class="primary-button" type="button" data-project-save>Sauvegarder mon projet</button>
+                <button class="secondary-button" type="button" data-project-load>Recharger mon projet</button>
+              </div>
+              <p class="project-save-status" data-project-save-status>
+                Aucun projet sauvegardé pour cette activité.
+              </p>
+            </div>
+
+            <div class="editor-frame-wrap lesson-editor">
+              <iframe
+                class="editor-frame"
+                data-scratch-editor
+                data-activity-id="activite-1"
+                title="Éditeur Scratch de l’activité 1"
+                src="http://localhost:8601/"
+                loading="lazy"
+                allow="autoplay; microphone; camera"
+              ></iframe>
+            </div>
+
+            <p class="editor-status" data-editor-status role="status">
+              Chargement de l’éditeur Scratch local…
+            </p>
+          </section>
+
+          <section class="cell cell-highlight">
+            <p class="cell-label">À retenir</p>
+            <div class="concept-grid">
+              <article>
+                <strong>Événement</strong>
+                <span>Le programme commence quand on clique sur le drapeau vert.</span>
+              </article>
+              <article>
+                <strong>Initialisation</strong>
+                <span>On remet le lutin en x = 0, y = 0 et on l’oriente à 90° avant de commencer.</span>
+              </article>
+              <article>
+                <strong>Séquence</strong>
+                <span>Les blocs sont exécutés de haut en bas, dans l’ordre.</span>
+              </article>
+            </div>
+          </section>
+
+          <section class="cell cell-highlight cell-check">
+            <p class="cell-label">Vérification rapide</p>
+            <h3>Pourquoi remet-on le lutin en x = 0, y = 0 au début ?</h3>
+            <div class="quiz-options" id="quiz-options" data-quiz-options data-quiz-id="activite-1">
+              <button type="button" data-answer="false">Pour changer sa couleur automatiquement</button>
+              <button type="button" data-answer="true">Pour repartir toujours du même endroit</button>
+              <button type="button" data-answer="false">Pour effacer tous les blocs déjà utilisés</button>
+            </div>
+            <p class="quiz-feedback" id="quiz-feedback" data-quiz-feedback data-quiz-id="activite-1">Choisis une réponse.</p>
+          </section>
+
+          <section class="lesson-actions">
+            <a class="primary-link" href="activite-2.html">Passer à l’activité 2</a>
+          </section>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Chapitre 1 · Premiers pas · Activité 1</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

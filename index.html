@@ -1,0 +1,151 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AlgoScratch — Accueil</title>
+  <meta name="description" content="Plateforme d'apprentissage de l'algorithmique avec Scratch.">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="AlgoScratch accueil">
+      <span class="brand-mark">AS</span>
+      <span>AlgoScratch</span>
+    </a>
+
+    <nav class="main-nav" aria-label="Navigation principale">
+      <a href="index.html">Accueil</a>
+      <a href="#parcours">Parcours</a>
+      <a href="activite-1.html">Première activité</a>
+    </nav>
+
+    <div class="session-pill" id="session-pill">Mode découverte</div>
+  </header>
+
+  <main class="page-main">
+    <section class="learning-layout home-layout">
+      <aside class="course-sidebar" aria-label="Arborescence du cours">
+        <button class="sidebar-toggle" id="sidebar-toggle" type="button" aria-expanded="true">
+          <span>Masquer</span>
+        </button>
+
+        <nav class="course-tree">
+          <h2>Parcours</h2>
+          <ol>
+            <li class="tree-home">
+              <a class="active" href="index.html">Accueil</a>
+            </li>
+            <li class="tree-group">
+              <span>I</span>
+              <div>
+                <strong>Activités Scratch</strong>
+                <span class="tree-section-title">Premiers pas</span>
+                <a class="tree-subitem" href="activite-1.html">Activité 1</a>
+                <a class="tree-subitem" href="activite-2.html">Activité 2</a>
+                <a class="tree-subitem" href="activite-3.html">Activité 3</a>
+              </div>
+            </li>
+            <li class="tree-group">
+              <span>II</span>
+              <div>
+                <strong>Énigmes Scratch</strong>
+              </div>
+            </li>
+            <li class="tree-group">
+              <span>III</span>
+              <div>
+                <strong>Activités sur feuilles</strong>
+              </div>
+            </li>
+            <li class="tree-group">
+              <span>IV</span>
+              <div>
+                <strong>Énigmes sur feuilles</strong>
+              </div>
+            </li>
+          </ol>
+        </nav>
+      </aside>
+
+      <div class="home-workspace">
+        <section class="hero">
+          <div class="hero-copy">
+            <p class="eyebrow">Accueil</p>
+            <h1>Apprendre l’algorithmique avec Scratch.</h1>
+            <p>
+              Les parties I et II prennent la forme de notebooks Scratch.
+              Les parties III et IV deviennent des exercices interactifs de logique et d’algorithmique.
+            </p>
+          </div>
+
+          <section class="login-card" aria-labelledby="login-title">
+            <p class="eyebrow">Identifiant élève</p>
+            <h2 id="login-title">Reprendre sa progression</h2>
+            <form id="login-form">
+              <label for="username">Choisis un identifiant</label>
+              <div class="inline-form">
+                <input id="username" name="username" type="text" minlength="2" placeholder="ex. lina6e" required>
+                <button type="submit">Entrer</button>
+              </div>
+            </form>
+            <p class="helper">
+              Pour le prototype, l’identifiant et la progression sont enregistrés localement dans ce navigateur.
+            </p>
+          </section>
+        </section>
+
+        <section class="course-map" id="parcours" aria-labelledby="course-map-title">
+          <div>
+            <p class="eyebrow">Structure du futur site</p>
+            <h2 id="course-map-title">4 parcours, 2 formats d’apprentissage.</h2>
+          </div>
+
+          <div class="course-grid">
+            <article class="course-card notebook">
+              <span>I</span>
+              <h3>Activités Scratch</h3>
+              <p>Notebook guidé : cours, consignes, cellule Scratch, validation.</p>
+            </article>
+            <article class="course-card notebook">
+              <span>II</span>
+              <h3>Énigmes Scratch</h3>
+              <p>Notebook défi : moins d’aide, plus d’autonomie, toujours avec Scratch.</p>
+            </article>
+            <article class="course-card interactive">
+              <span>III</span>
+              <h3>Activités sur feuilles</h3>
+              <p>Exercices interactifs : réponses, manipulations, schémas, logique.</p>
+            </article>
+            <article class="course-card interactive">
+              <span>IV</span>
+              <h3>Énigmes sur feuilles</h3>
+              <p>Défis autonomes sans notebook, centrés sur la réflexion algorithmique.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="home-callout">
+          <div>
+            <p class="eyebrow">Commencer</p>
+            <h2>Chapitre 1 · Premiers pas</h2>
+            <p>
+              Une première leçon pour découvrir la séquence d’instructions, les déplacements et les directions.
+            </p>
+          </div>
+          <a class="primary-link" href="activite-1.html">Ouvrir l’activité 1</a>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>
+      Prototype d’interface pour transformer le PDF en plateforme complète :
+      notebooks Scratch pour I–II, exercices interactifs pour III–IV.
+    </p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

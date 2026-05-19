@@ -1,0 +1,13 @@
+{
+  "name": "algoscratch",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Prototype de plateforme d'apprentissage de l'algorithmique avec Scratch.",
+  "scripts": {
+    "start": "node server.js",
+    "check": "node --check app.js && node --check server.js"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

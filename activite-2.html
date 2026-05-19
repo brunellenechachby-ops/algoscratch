@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AlgoScratch — Premiers pas · Activité 2</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="AlgoScratch accueil">
+      <span class="brand-mark">AS</span>
+      <span>AlgoScratch</span>
+    </a>
+
+    <nav class="main-nav" aria-label="Navigation principale">
+      <a href="index.html">Accueil</a>
+      <a href="index.html#parcours">Parcours</a>
+      <a href="activite-1.html">Premiers pas</a>
+    </nav>
+
+    <div class="session-pill" id="session-pill">Mode découverte</div>
+  </header>
+
+  <main class="page-main">
+    <section class="learning-layout">
+      <aside class="course-sidebar" aria-label="Arborescence du cours">
+        <button class="sidebar-toggle" id="sidebar-toggle" type="button" aria-expanded="true">
+          <span>Masquer</span>
+        </button>
+
+        <nav class="course-tree">
+          <h2>Parcours</h2>
+          <ol>
+            <li class="tree-home">
+              <a href="index.html">Accueil</a>
+            </li>
+            <li class="tree-group active">
+              <span>I</span>
+              <div>
+                <strong>Activités Scratch</strong>
+                <span class="tree-section-title active-section">Premiers pas</span>
+                <a class="tree-subitem" href="activite-1.html">Activité 1</a>
+                <a class="tree-subitem active" href="activite-2.html">Activité 2</a>
+                <a class="tree-subitem" href="activite-3.html">Activité 3</a>
+              </div>
+            </li>
+            <li class="tree-group">
+              <span>II</span>
+              <div><strong>Énigmes Scratch</strong></div>
+            </li>
+            <li class="tree-group">
+              <span>III</span>
+              <div><strong>Activités sur feuilles</strong></div>
+            </li>
+            <li class="tree-group">
+              <span>IV</span>
+              <div><strong>Énigmes sur feuilles</strong></div>
+            </li>
+          </ol>
+        </nav>
+      </aside>
+
+      <div class="lesson-workspace">
+        <nav class="lesson-topbar" aria-label="Navigation de la leçon">
+          <ol class="breadcrumbs">
+            <li>Activités Scratch</li>
+            <li>Premiers pas</li>
+            <li>Activité 2</li>
+          </ol>
+
+          <div class="activity-stepper" aria-label="Activités du chapitre Premiers pas">
+            <a href="activite-1.html">1</a>
+            <span></span>
+            <a class="active" href="activite-2.html" aria-current="step">2</a>
+            <span></span>
+            <a href="activite-3.html">3</a>
+          </div>
+        </nav>
+
+        <article class="notebook-page">
+          <header class="lesson-header">
+            <div>
+              <p class="eyebrow">Partie I · Leçon 1</p>
+              <h2>Premiers pas</h2>
+            </div>
+            <span class="lesson-badge">Notebook Scratch</span>
+          </header>
+
+          <section class="cell cell-course">
+            <p class="cell-label">Objectif</p>
+            <h3>Tracer la lettre « G » en choisissant les bonnes directions.</h3>
+            <p>
+              Cette activité introduit les directions absolues :
+              vers le haut, le bas, la droite et la gauche.
+            </p>
+          </section>
+
+          <section class="cell cell-activity">
+            <p class="cell-label">Activité guidée</p>
+            <h3>Reproduis la lettre « G ».</h3>
+            <p>
+              Utilise seulement les blocs <strong>avancer</strong> et <strong>s’orienter à</strong>
+              pour suivre les segments de la figure.
+            </p>
+
+            <div class="activity-support-grid">
+              <figure class="drawing-card">
+                <svg viewBox="0 0 260 250" role="img" aria-label="Lettre G à reproduire">
+                  <defs>
+                    <marker id="arrow-red-g" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+                      <path d="M0,0 L8,4 L0,8 Z" fill="#ff1d25"></path>
+                    </marker>
+                  </defs>
+                  <path d="M50 205 V45 H135 M50 205 H215 V125 H135" fill="none" stroke="#0057ff" stroke-width="4"></path>
+                  <line x1="50" y1="36" x2="135" y2="36" stroke="#ff1d25" stroke-width="2" marker-start="url(#arrow-red-g)" marker-end="url(#arrow-red-g)"></line>
+                  <line x1="41" y1="45" x2="41" y2="205" stroke="#ff1d25" stroke-width="2" marker-start="url(#arrow-red-g)" marker-end="url(#arrow-red-g)"></line>
+                  <line x1="50" y1="214" x2="215" y2="214" stroke="#ff1d25" stroke-width="2" marker-start="url(#arrow-red-g)" marker-end="url(#arrow-red-g)"></line>
+                  <line x1="135" y1="116" x2="215" y2="116" stroke="#ff1d25" stroke-width="2" marker-start="url(#arrow-red-g)" marker-end="url(#arrow-red-g)"></line>
+                  <line x1="224" y1="125" x2="224" y2="205" stroke="#ff1d25" stroke-width="2" marker-start="url(#arrow-red-g)" marker-end="url(#arrow-red-g)"></line>
+                  <text x="92" y="24">50</text>
+                  <text x="5" y="129">100</text>
+                  <text x="119" y="239">100</text>
+                  <text x="165" y="104">50</text>
+                  <text x="233" y="169">50</text>
+                </svg>
+                <figcaption>Figure à tracer</figcaption>
+              </figure>
+
+              <section class="blocks-card" aria-label="Blocs à utiliser pour l'activité 2">
+                <strong>Blocs à utiliser</strong>
+                <div class="block-chip motion">avancer de …</div>
+                <div class="block-chip motion">s’orienter à 0°</div>
+                <div class="block-chip motion">s’orienter à 180°</div>
+                <div class="block-chip motion">s’orienter à 90°</div>
+                <div class="block-chip motion">s’orienter à −90°</div>
+              </section>
+            </div>
+
+            <div class="editor-guidance">
+              <strong>Avant de commencer :</strong>
+              si tu ne vois pas les blocs de dessin, clique sur <em>Ajouter une extension</em>
+              dans Scratch puis choisis <em>Stylo</em>.
+            </div>
+
+            <div class="project-save-panel" data-project-save-panel data-activity-id="activite-2">
+              <div>
+                <strong>Projet Scratch de cette activité</strong>
+                <span>Sauvegarde ton tracé de la lettre « G » pour pouvoir le retrouver plus tard.</span>
+              </div>
+              <div class="project-save-actions">
+                <button class="primary-button" type="button" data-project-save>Sauvegarder mon projet</button>
+                <button class="secondary-button" type="button" data-project-load>Recharger mon projet</button>
+              </div>
+              <p class="project-save-status" data-project-save-status>
+                Aucun projet sauvegardé pour cette activité.
+              </p>
+            </div>
+
+            <div class="editor-frame-wrap lesson-editor">
+              <iframe
+                class="editor-frame"
+                data-scratch-editor
+                data-activity-id="activite-2"
+                title="Éditeur Scratch de l’activité 2"
+                src="http://localhost:8601/"
+                loading="lazy"
+                allow="autoplay; microphone; camera"
+              ></iframe>
+            </div>
+
+            <p class="editor-status" data-editor-status role="status">
+              Chargement de l’éditeur Scratch local…
+            </p>
+          </section>
+
+          <section class="cell cell-highlight">
+            <p class="cell-label">À retenir</p>
+            <div class="concept-grid">
+              <article>
+                <strong>0°</strong>
+                <span>Le lutin regarde vers le haut.</span>
+              </article>
+              <article>
+                <strong>90°</strong>
+                <span>Le lutin regarde vers la droite.</span>
+              </article>
+              <article>
+                <strong>180°</strong>
+                <span>Le lutin regarde vers le bas.</span>
+              </article>
+              <article>
+                <strong>−90°</strong>
+                <span>Le lutin regarde vers la gauche.</span>
+              </article>
+            </div>
+          </section>
+
+          <section class="cell cell-highlight cell-check">
+            <p class="cell-label">Vérification rapide</p>
+            <h3>Quelle direction permet d’aller vers la gauche ?</h3>
+            <div class="quiz-options" data-quiz-options data-quiz-id="activite-2">
+              <button type="button" data-answer="false">0°</button>
+              <button type="button" data-answer="false">90°</button>
+              <button type="button" data-answer="true">−90°</button>
+            </div>
+            <p class="quiz-feedback" data-quiz-feedback data-quiz-id="activite-2">Choisis une réponse.</p>
+          </section>
+
+          <section class="lesson-actions dual-actions">
+            <a class="secondary-link" href="activite-1.html">Revenir à l’activité 1</a>
+            <a class="primary-link" href="activite-3.html">Passer à l’activité 3</a>
+          </section>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Chapitre 1 · Premiers pas · Activité 2</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

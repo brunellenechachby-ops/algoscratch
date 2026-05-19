@@ -1,0 +1,139 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AlgoScratch — Prototype éditeur Scratch</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="AlgoScratch accueil">
+      <span class="brand-mark">AS</span>
+      <span>AlgoScratch</span>
+    </a>
+
+    <nav class="main-nav" aria-label="Navigation principale">
+      <a href="index.html">Accueil</a>
+      <a href="activite-1.html">Activité 1</a>
+      <a href="scratch-spike.html">Prototype Scratch</a>
+    </nav>
+
+    <div class="session-pill" id="session-pill">Mode découverte</div>
+  </header>
+
+  <main class="page-main">
+    <section class="learning-layout">
+      <aside class="course-sidebar" aria-label="Arborescence du cours">
+        <button class="sidebar-toggle" id="sidebar-toggle" type="button" aria-expanded="true">
+          <span>Masquer</span>
+        </button>
+
+        <nav class="course-tree">
+          <h2>Parcours</h2>
+          <ol>
+            <li class="tree-home">
+              <a href="index.html">Accueil</a>
+            </li>
+            <li class="tree-group active">
+              <span>I</span>
+              <div>
+                <strong>Activités Scratch</strong>
+                <a href="activite-1.html">1. Premiers pas</a>
+                <a class="active" href="scratch-spike.html">Prototype éditeur</a>
+              </div>
+            </li>
+            <li class="tree-group">
+              <span>II</span>
+              <div><strong>Énigmes Scratch</strong></div>
+            </li>
+            <li class="tree-group">
+              <span>III</span>
+              <div><strong>Activités sur feuilles</strong></div>
+            </li>
+            <li class="tree-group">
+              <span>IV</span>
+              <div><strong>Énigmes sur feuilles</strong></div>
+            </li>
+          </ol>
+        </nav>
+      </aside>
+
+      <div class="lesson-workspace">
+        <nav class="lesson-topbar" aria-label="Navigation du prototype">
+          <ol class="breadcrumbs">
+            <li>Activités Scratch</li>
+            <li>Prototype éditeur</li>
+          </ol>
+        </nav>
+
+        <article class="notebook-page">
+          <header class="lesson-header">
+            <div>
+              <p class="eyebrow">Spike technique</p>
+              <h2>Prototype d’intégration Scratch</h2>
+            </div>
+            <span class="lesson-badge">Expérimental</span>
+          </header>
+
+          <section class="cell cell-course">
+            <p class="cell-label">But du test</p>
+            <h3>Vérifier l’intégration d’un vrai éditeur Scratch dans le parcours.</h3>
+            <p>
+              Cette page sert uniquement à tester l’affichage d’un éditeur Scratch réel à côté du site pédagogique.
+              Elle ne représente pas encore l’intégration finale ni la sauvegarde des projets élèves.
+            </p>
+          </section>
+
+          <section class="cell editor-spike-card">
+            <p class="cell-label">Éditeur Scratch</p>
+            <div class="editor-frame-wrap">
+              <iframe
+                class="editor-frame"
+                title="Prototype éditeur Scratch"
+                src="http://localhost:8601/"
+                loading="lazy"
+                allow="autoplay; microphone; camera"
+              ></iframe>
+            </div>
+            <p class="editor-status" data-editor-status role="status">
+              Chargement de l’éditeur Scratch local…
+            </p>
+            <p class="helper">
+              Cette page utilise maintenant une instance locale de l’éditeur Scratch. Cela nous permet de stabiliser
+              l’affichage avant de le raccorder aux vraies activités et à la sauvegarde des projets élèves.
+            </p>
+            <a class="primary-link" href="http://localhost:8601/" target="_blank" rel="noreferrer">
+              Ouvrir l’éditeur local
+            </a>
+          </section>
+
+          <section class="cell cell-highlight">
+            <p class="cell-label">À valider</p>
+            <div class="concept-grid">
+              <article>
+                <strong>Affichage</strong>
+                <span>L’éditeur s’ouvre-t-il correctement dans le contexte du cours ?</span>
+              </article>
+              <article>
+                <strong>Ergonomie</strong>
+                <span>L’espace restant est-il suffisant pour travailler confortablement ?</span>
+              </article>
+              <article>
+                <strong>Suite technique</strong>
+                <span>Faut-il ensuite intégrer l’éditeur en local pour charger et sauvegarder les projets ?</span>
+              </article>
+            </div>
+          </section>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Prototype technique pour l’intégration de Scratch.</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>

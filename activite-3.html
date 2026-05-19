@@ -1,0 +1,221 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AlgoScratch — Premiers pas · Activité 3</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <header class="site-header">
+    <a class="brand" href="index.html" aria-label="AlgoScratch accueil">
+      <span class="brand-mark">AS</span>
+      <span>AlgoScratch</span>
+    </a>
+
+    <nav class="main-nav" aria-label="Navigation principale">
+      <a href="index.html">Accueil</a>
+      <a href="index.html#parcours">Parcours</a>
+      <a href="activite-1.html">Premiers pas</a>
+    </nav>
+
+    <div class="session-pill" id="session-pill">Mode découverte</div>
+  </header>
+
+  <main class="page-main">
+    <section class="learning-layout">
+      <aside class="course-sidebar" aria-label="Arborescence du cours">
+        <button class="sidebar-toggle" id="sidebar-toggle" type="button" aria-expanded="true">
+          <span>Masquer</span>
+        </button>
+
+        <nav class="course-tree">
+          <h2>Parcours</h2>
+          <ol>
+            <li class="tree-home">
+              <a href="index.html">Accueil</a>
+            </li>
+            <li class="tree-group active">
+              <span>I</span>
+              <div>
+                <strong>Activités Scratch</strong>
+                <span class="tree-section-title active-section">Premiers pas</span>
+                <a class="tree-subitem" href="activite-1.html">Activité 1</a>
+                <a class="tree-subitem" href="activite-2.html">Activité 2</a>
+                <a class="tree-subitem active" href="activite-3.html">Activité 3</a>
+              </div>
+            </li>
+            <li class="tree-group">
+              <span>II</span>
+              <div><strong>Énigmes Scratch</strong></div>
+            </li>
+            <li class="tree-group">
+              <span>III</span>
+              <div><strong>Activités sur feuilles</strong></div>
+            </li>
+            <li class="tree-group">
+              <span>IV</span>
+              <div><strong>Énigmes sur feuilles</strong></div>
+            </li>
+          </ol>
+        </nav>
+      </aside>
+
+      <div class="lesson-workspace">
+        <nav class="lesson-topbar" aria-label="Navigation de la leçon">
+          <ol class="breadcrumbs">
+            <li>Activités Scratch</li>
+            <li>Premiers pas</li>
+            <li>Activité 3</li>
+          </ol>
+
+          <div class="activity-stepper" aria-label="Activités du chapitre Premiers pas">
+            <a href="activite-1.html">1</a>
+            <span></span>
+            <a href="activite-2.html">2</a>
+            <span></span>
+            <a class="active" href="activite-3.html" aria-current="step">3</a>
+          </div>
+        </nav>
+
+        <article class="notebook-page">
+          <header class="lesson-header">
+            <div>
+              <p class="eyebrow">Partie I · Leçon 1</p>
+              <h2>Premiers pas</h2>
+            </div>
+            <span class="lesson-badge">Notebook Scratch</span>
+          </header>
+
+          <section class="cell cell-course">
+            <p class="cell-label">Objectif</p>
+            <h3>Tracer la lettre « L » avec des quarts de tour.</h3>
+            <p>
+              Cette activité montre qu’on peut construire une figure en tournant de 90°,
+              au lieu de fixer directement une direction absolue.
+            </p>
+          </section>
+
+          <section class="cell cell-activity">
+            <p class="cell-label">Activité guidée</p>
+            <h3>Reproduis la lettre « L ».</h3>
+            <p>
+              Utilise les blocs <strong>avancer</strong> et <strong>tourner de 90 degrés</strong>
+              pour construire la figure demandée.
+            </p>
+
+            <div class="activity-support-grid">
+              <figure class="drawing-card">
+                <svg viewBox="0 0 280 260" role="img" aria-label="Lettre L à reproduire">
+                  <defs>
+                    <marker id="arrow-red-l" markerWidth="8" markerHeight="8" refX="4" refY="4" orient="auto">
+                      <path d="M0,0 L8,4 L0,8 Z" fill="#ff1d25"></path>
+                    </marker>
+                  </defs>
+                  <path d="M55 45 H175 V95 H115 V205 H55" fill="none" stroke="#0057ff" stroke-width="4"></path>
+                  <line x1="55" y1="36" x2="175" y2="36" stroke="#ff1d25" stroke-width="2" marker-start="url(#arrow-red-l)" marker-end="url(#arrow-red-l)"></line>
+                  <line x1="184" y1="45" x2="184" y2="95" stroke="#ff1d25" stroke-width="2" marker-start="url(#arrow-red-l)" marker-end="url(#arrow-red-l)"></line>
+                  <line x1="115" y1="104" x2="175" y2="104" stroke="#ff1d25" stroke-width="2" marker-start="url(#arrow-red-l)" marker-end="url(#arrow-red-l)"></line>
+                  <line x1="106" y1="95" x2="106" y2="205" stroke="#ff1d25" stroke-width="2" marker-start="url(#arrow-red-l)" marker-end="url(#arrow-red-l)"></line>
+                  <line x1="55" y1="214" x2="115" y2="214" stroke="#ff1d25" stroke-width="2" marker-start="url(#arrow-red-l)" marker-end="url(#arrow-red-l)"></line>
+                  <line x1="46" y1="45" x2="46" y2="205" stroke="#ff1d25" stroke-width="2" marker-start="url(#arrow-red-l)" marker-end="url(#arrow-red-l)"></line>
+                  <text x="111" y="24">100</text>
+                  <text x="194" y="72">50</text>
+                  <text x="138" y="93">50</text>
+                  <text x="69" y="153">100</text>
+                  <text x="72" y="239">50</text>
+                  <text x="7" y="129">150</text>
+                </svg>
+                <figcaption>Figure à tracer</figcaption>
+              </figure>
+
+              <section class="blocks-card" aria-label="Blocs à utiliser pour l'activité 3">
+                <strong>Blocs à utiliser</strong>
+                <div class="block-chip motion">avancer de …</div>
+                <div class="block-chip motion">tourner à droite de 90°</div>
+                <div class="block-chip motion">tourner à gauche de 90°</div>
+              </section>
+            </div>
+
+            <div class="editor-guidance">
+              <strong>Avant de commencer :</strong>
+              si tu ne vois pas les blocs de dessin, clique sur <em>Ajouter une extension</em>
+              dans Scratch puis choisis <em>Stylo</em>.
+            </div>
+
+            <div class="project-save-panel" data-project-save-panel data-activity-id="activite-3">
+              <div>
+                <strong>Projet Scratch de cette activité</strong>
+                <span>Sauvegarde ton tracé de la lettre « L » pour pouvoir le retrouver plus tard.</span>
+              </div>
+              <div class="project-save-actions">
+                <button class="primary-button" type="button" data-project-save>Sauvegarder mon projet</button>
+                <button class="secondary-button" type="button" data-project-load>Recharger mon projet</button>
+              </div>
+              <p class="project-save-status" data-project-save-status>
+                Aucun projet sauvegardé pour cette activité.
+              </p>
+            </div>
+
+            <div class="editor-frame-wrap lesson-editor">
+              <iframe
+                class="editor-frame"
+                data-scratch-editor
+                data-activity-id="activite-3"
+                title="Éditeur Scratch de l’activité 3"
+                src="http://localhost:8601/"
+                loading="lazy"
+                allow="autoplay; microphone; camera"
+              ></iframe>
+            </div>
+
+            <p class="editor-status" data-editor-status role="status">
+              Chargement de l’éditeur Scratch local…
+            </p>
+          </section>
+
+          <section class="cell cell-highlight">
+            <p class="cell-label">À retenir</p>
+            <div class="concept-grid">
+              <article>
+                <strong>Tourner</strong>
+                <span>On change de direction relativement à la position actuelle.</span>
+              </article>
+              <article>
+                <strong>90°</strong>
+                <span>Un quart de tour forme un angle droit.</span>
+              </article>
+              <article>
+                <strong>Séquence</strong>
+                <span>Les instructions successives dessinent la forme finale.</span>
+              </article>
+            </div>
+          </section>
+
+          <section class="cell cell-highlight cell-check">
+            <p class="cell-label">Vérification rapide</p>
+            <h3>Combien de degrés faut-il tourner pour faire un angle droit ?</h3>
+            <div class="quiz-options" data-quiz-options data-quiz-id="activite-3">
+              <button type="button" data-answer="false">45°</button>
+              <button type="button" data-answer="true">90°</button>
+              <button type="button" data-answer="false">180°</button>
+            </div>
+            <p class="quiz-feedback" data-quiz-feedback data-quiz-id="activite-3">Choisis une réponse.</p>
+          </section>
+
+          <section class="lesson-actions dual-actions">
+            <a class="secondary-link" href="activite-2.html">Revenir à l’activité 2</a>
+            <button class="primary-button" id="complete-lesson" type="button">Marquer la leçon comme terminée</button>
+          </section>
+        </article>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <p>Chapitre 1 · Premiers pas · Activité 3</p>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
