@@ -86,6 +86,30 @@ input {
   text-decoration: none;
 }
 
+
+.session-actions {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-left: auto;
+}
+
+.logout-button {
+  min-height: 40px;
+  padding: 0 14px;
+  color: var(--muted);
+  background: #fff;
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  font-size: 0.88rem;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.logout-button:hover {
+  color: var(--violet);
+  border-color: rgba(124, 92, 255, 0.35);
+}
 .session-pill {
   padding: 10px 14px;
   color: var(--blue);
@@ -574,6 +598,10 @@ span {
 
 .instruction-list strong {
   color: var(--ink);
+}
+
+.instruction-list p {
+  margin: 0;
 }
 
 .instruction-list ul {

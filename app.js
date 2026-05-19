@@ -35,6 +35,7 @@ const els = {
   loginForm: document.querySelector("#login-form"),
   username: document.querySelector("#username"),
   sessionPill: document.querySelector("#session-pill"),
+  logoutButton: document.querySelector("#logout-button"),
   blockPalette: document.querySelector("#block-palette"),
   programStack: document.querySelector("#program-stack"),
   activityFeedback: document.querySelector("#activity-feedback"),
@@ -359,6 +360,14 @@ async function login(event) {
   getUserProgress();
   saveState();
   hydrateSession();
+  hydrateProjectSavePanels();
+}
+
+function logout() {
+  state.currentUser = "";
+  saveState({ syncServer: false });
+  hydrateSession();
+  hydrateProjectSavePanels();
 }
 
 function hydrateSession() {
@@ -372,6 +381,10 @@ function hydrateSession() {
 
   if (els.username) {
     els.username.value = state.currentUser;
+  }
+
+  if (els.logoutButton) {
+    els.logoutButton.hidden = !state.currentUser;
   }
 
   renderProgram();
@@ -582,6 +595,7 @@ function base64ToArrayBuffer(base64) {
 }
 
 els.loginForm?.addEventListener("submit", login);
+els.logoutButton?.addEventListener("click", logout);
 els.quizOptionsList.forEach((quizOptions) => {
   quizOptions.addEventListener("click", handleQuizClick);
 });
