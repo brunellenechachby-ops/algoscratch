@@ -364,6 +364,8 @@ async function login(event) {
 }
 
 function logout() {
+  if (!state.currentUser) return;
+
   state.currentUser = "";
   saveState({ syncServer: false });
   hydrateSession();
@@ -384,7 +386,8 @@ function hydrateSession() {
   }
 
   if (els.logoutButton) {
-    els.logoutButton.hidden = !state.currentUser;
+    els.logoutButton.disabled = !state.currentUser;
+    els.logoutButton.setAttribute("aria-disabled", String(!state.currentUser));
   }
 
   renderProgram();

@@ -110,6 +110,11 @@ input {
   color: var(--violet);
   border-color: rgba(124, 92, 255, 0.35);
 }
+
+.logout-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
 .session-pill {
   padding: 10px 14px;
   color: var(--blue);
