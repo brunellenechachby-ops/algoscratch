@@ -101,7 +101,7 @@ async function loadSupabaseAdminState() {
   const {data: sessionData} = await adminSupabaseClient.auth.getSession();
   const session = sessionData?.session;
   if (!session?.user) {
-    throw new Error("Connecte-toi d’abord avec le compte prof depuis la page d’accueil.");
+    throw new Error("Accès réservé : connecte-toi avec le compte prof.");
   }
 
   const {data: currentProfile, error: profileError} = await adminSupabaseClient
@@ -111,7 +111,7 @@ async function loadSupabaseAdminState() {
     .single();
 
   if (profileError || currentProfile?.role !== "admin") {
-    throw new Error("Le compte connecté n’a pas le rôle admin.");
+    throw new Error("Accès réservé : ce compte n’a pas le rôle admin.");
   }
 
   const [{data: profiles, error: profilesError}, {data: progressRows, error: progressError}, {data: projectRows, error: projectError}] = await Promise.all([
@@ -270,9 +270,14 @@ async function loadAdminState() {
       adminEls.status.className = "admin-load-status success";
       return;
     } catch (error) {
-      adminEls.status.textContent = `${error.message} Mode local si serveur disponible.`;
+      adminEls.status.textContent = error.message;
       adminEls.status.className = "admin-load-status error";
-      if (!isLocalPreview) return;
+      if (!isLocalPreview) {
+        window.setTimeout(() => {
+          window.location.href = "index.html";
+        }, 1200);
+        return;
+      }
     }
   }
 
@@ -284,8 +289,18 @@ async function loadAdminState() {
     adminEls.status.textContent = "Donn\u00e9es \u00e0 jour";
     adminEls.status.className = "admin-load-status success";
   } catch (error) {
-    adminEls.status.textContent = "Suivi disponible uniquement avec le serveur local.";
+    adminEls.status.textContent = `Suivi indisponible : ${error.message}`;
     adminEls.status.className = "admin-load-status error";
+  }
+}
+
+async function guardAdminLandingPage() {
+  if (adminEls.tableBody || !adminSupabaseClient || isLocalPreview) return;
+
+  try {
+    await loadSupabaseAdminState();
+  } catch (error) {
+    window.location.href = "index.html";
   }
 }
 
@@ -320,7 +335,7 @@ async function handleAdminAction(event) {
     adminEls.status.textContent = "Modification enregistr\u00e9e";
     adminEls.status.className = "admin-load-status success";
   } catch (error) {
-    adminEls.status.textContent = "La modification n\u2019a pas pu \u00eatre enregistr\u00e9e.";
+    adminEls.status.textContent = `La modification n\u2019a pas pu \u00eatre enregistr\u00e9e : ${error.message}`;
     adminEls.status.className = "admin-load-status error";
   }
 }
@@ -347,4 +362,5 @@ adminEls.refresh?.addEventListener("click", loadAdminState);
 adminEls.logout?.addEventListener("click", logoutAdmin);
 adminEls.tableBody?.addEventListener("click", handleAdminAction);
 renderAdminSidebar();
+guardAdminLandingPage();
 loadAdminState();
