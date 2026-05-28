@@ -1,4 +1,4 @@
-const STORAGE_KEY = "algoscratch-prototype";
+﻿const STORAGE_KEY = "algoscratch-prototype";
 const SERVER_STATE_ENDPOINT = "/api/state";
 const SERVER_STORAGE_ENABLED = window.location.protocol !== "file:";
 
@@ -25,17 +25,28 @@ const blocks = [
   { label: "attendre 1 seconde", type: "event" },
 ];
 
+const activityDestinations = {
+  "activite-1": {href: "activite-1.html", number: "1"},
+  "activite-2": {href: "activite-2.html", number: "2"},
+  "activite-3": {href: "activite-3.html", number: "3"},
+};
+
 const defaultState = {
   currentUser: "",
   sidebarCollapsed: false,
+  firstStepsExpanded: true,
   users: {},
 };
 
 const els = {
   loginForm: document.querySelector("#login-form"),
   username: document.querySelector("#username"),
+  password: document.querySelector("#password"),
+  loginFeedback: document.querySelector("#login-feedback"),
   sessionPill: document.querySelector("#session-pill"),
   logoutButton: document.querySelector("#logout-button"),
+  continuationLabel: document.querySelector("#continuation-label"),
+  continuationLink: document.querySelector("#continuation-link"),
   blockPalette: document.querySelector("#block-palette"),
   programStack: document.querySelector("#program-stack"),
   activityFeedback: document.querySelector("#activity-feedback"),
@@ -44,6 +55,8 @@ const els = {
   completeLesson: document.querySelector("#complete-lesson"),
   resetBlocks: document.querySelector("#reset-blocks"),
   sidebarToggle: document.querySelector("#sidebar-toggle"),
+  treeSectionToggle: document.querySelector('[data-tree-toggle="premiers-pas"]'),
+  treeSectionItems: document.querySelector("#premiers-pas-items"),
   learningLayout: document.querySelector(".learning-layout"),
   editorFrames: [...document.querySelectorAll(".editor-frame")],
   editorStatuses: [...document.querySelectorAll("[data-editor-status]")],
@@ -53,6 +66,7 @@ const els = {
 
 const pendingScratchRequests = new Map();
 let serverSaveTimer = null;
+let activityVisitRecorded = false;
 
 let state = loadState();
 
@@ -145,6 +159,8 @@ function getUserProgress() {
       quizzes: {},
       lessonCompleted: false,
       assembledProgram: [],
+      activityVisits: {},
+      validations: {},
     };
   }
 
@@ -156,6 +172,8 @@ function getUserProgress() {
       scratchProjects: {},
       lessonCompleted: false,
       assembledProgram: [],
+      activityVisits: {},
+      validations: {},
     };
     saveState();
   }
@@ -166,6 +184,8 @@ function getUserProgress() {
       : {};
   }
   state.users[state.currentUser].scratchProjects ||= {};
+  state.users[state.currentUser].activityVisits ||= {};
+  state.users[state.currentUser].validations ||= {};
 
   return state.users[state.currentUser];
 }
@@ -330,8 +350,35 @@ function resetQuizVisuals() {
 
 function toggleSidebar() {
   state.sidebarCollapsed = !state.sidebarCollapsed;
-  saveState();
+  saveState({ syncServer: false });
   renderSidebar();
+}
+
+function toggleFirstSteps() {
+  state.firstStepsExpanded = state.firstStepsExpanded === false;
+  saveState({ syncServer: false });
+  renderSidebar();
+}
+
+function renderSidebarValidationChecks(progress = getUserProgress()) {
+  if (!els.treeSectionItems) return;
+
+  els.treeSectionItems.querySelectorAll(".tree-subitem[data-activity-id]").forEach((link) => {
+    link.querySelector(".validation-check")?.remove();
+
+    const activityId = link.dataset.activityId;
+    const isValidated = Boolean(progress.validations?.[activityId]?.validated);
+    link.classList.toggle("is-validated", isValidated);
+
+    if (isValidated) {
+      const check = document.createElement("span");
+      check.className = "validation-check";
+      check.textContent = "\u2713";
+      check.title = "Activit\u00e9 valid\u00e9e";
+      check.setAttribute("aria-label", "activit\u00e9 valid\u00e9e");
+      link.append(check);
+    }
+  });
 }
 
 function renderSidebar() {
@@ -340,6 +387,13 @@ function renderSidebar() {
   els.learningLayout.classList.toggle("sidebar-collapsed", state.sidebarCollapsed);
   els.sidebarToggle.setAttribute("aria-expanded", String(!state.sidebarCollapsed));
   els.sidebarToggle.title = state.sidebarCollapsed ? "Afficher l’arborescence" : "Masquer l’arborescence";
+
+  if (els.treeSectionToggle && els.treeSectionItems) {
+    const expanded = state.firstStepsExpanded !== false;
+    els.treeSectionToggle.setAttribute("aria-expanded", String(expanded));
+    els.treeSectionItems.hidden = !expanded;
+    renderSidebarValidationChecks();
+  }
 }
 
 function promptLogin() {
@@ -350,17 +404,48 @@ function promptLogin() {
   }
 }
 
+function setLoginFeedback(message = "", tone = "") {
+  if (!els.loginFeedback) return;
+
+  els.loginFeedback.textContent = message;
+  els.loginFeedback.className = `login-feedback${tone ? ` ${tone}` : ""}`;
+}
+
+async function hashPassword(password) {
+  const data = new TextEncoder().encode(password);
+  const digest = await window.crypto.subtle.digest("SHA-256", data);
+  return Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, "0")).join("");
+}
+
 async function login(event) {
   event.preventDefault();
   const username = els.username.value.trim();
+  const password = els.password?.value || "";
+
   if (username.length < 2) return;
+  if (!/^[A-Za-z0-9]{6}$/.test(password)) {
+    setLoginFeedback("Le mot de passe doit contenir exactement 6 lettres ou chiffres.", "error");
+    return;
+  }
+
+  await hydrateFromServer();
+  const passwordHash = await hashPassword(password);
+  const knownUser = state.users[username];
+
+  if (knownUser?.passwordHash && knownUser.passwordHash !== passwordHash) {
+    setLoginFeedback("Mot de passe incorrect pour cet identifiant.", "error");
+    return;
+  }
 
   state.currentUser = username;
-  await hydrateFromServer();
-  getUserProgress();
+  const progress = getUserProgress();
+  const isNewPassword = !progress.passwordHash;
+  progress.passwordHash ||= passwordHash;
   saveState();
   hydrateSession();
   hydrateProjectSavePanels();
+  els.password.value = "";
+  setLoginFeedback(isNewPassword ? "Identifiant enregistré. Ta progression pourra être retrouvée." : "Connexion réussie.", "success");
 }
 
 function logout() {
@@ -370,10 +455,64 @@ function logout() {
   saveState({ syncServer: false });
   hydrateSession();
   hydrateProjectSavePanels();
+  if (els.password) els.password.value = "";
+  setLoginFeedback("Tu es déconnecté.", "success");
+}
+
+function inferLastActivity(progress) {
+  if (activityDestinations[progress.lastActivity]) {
+    return progress.lastActivity;
+  }
+
+  const savedProjects = Object.entries(progress.scratchProjects || {})
+    .filter(([activityId]) => activityDestinations[activityId])
+    .sort(([, first], [, second]) => Date.parse(second.savedAt || 0) - Date.parse(first.savedAt || 0));
+  if (savedProjects.length) {
+    return savedProjects[0][0];
+  }
+
+  if (progress.lessonCompleted) return "activite-3";
+  if (progress.quizzes?.["activite-3"]) return "activite-3";
+  if (progress.quizzes?.["activite-2"]) return "activite-2";
+  return "activite-1";
+}
+
+function rememberCurrentActivity(progress) {
+  if (!state.currentUser || activityVisitRecorded) return;
+
+  const activityId = els.projectSavePanels[0]?.dataset.activityId;
+  if (!activityDestinations[activityId]) return;
+
+  const now = new Date().toISOString();
+  progress.activityVisits ||= {};
+  progress.activityVisits[activityId] ||= {startedAt: now};
+  progress.activityVisits[activityId].lastOpenedAt = now;
+  progress.lastActivity = activityId;
+  activityVisitRecorded = true;
+  saveState();
+}
+
+function updateContinuationAction(progress) {
+  if (!els.continuationLabel || !els.continuationLink) return;
+
+  if (!state.currentUser) {
+    els.continuationLabel.textContent = "Commencer";
+    els.continuationLink.href = "activite-1.html";
+    els.continuationLink.textContent = "Ouvrir l’activité 1";
+    return;
+  }
+
+  const activityId = inferLastActivity(progress);
+  const destination = activityDestinations[activityId];
+  els.continuationLabel.textContent = "Reprendre";
+  els.continuationLink.href = destination.href;
+  els.continuationLink.textContent = `Reprendre l’activité ${destination.number}`;
 }
 
 function hydrateSession() {
   const progress = getUserProgress();
+  rememberCurrentActivity(progress);
+  updateContinuationAction(progress);
 
   if (els.sessionPill) {
     els.sessionPill.textContent = state.currentUser
@@ -605,6 +744,7 @@ els.quizOptionsList.forEach((quizOptions) => {
 els.completeLesson?.addEventListener("click", completeLesson);
 els.resetBlocks?.addEventListener("click", resetBlocks);
 els.sidebarToggle?.addEventListener("click", toggleSidebar);
+els.treeSectionToggle?.addEventListener("click", toggleFirstSteps);
 els.projectSavePanels.forEach((panel) => {
   const activityId = panel.dataset.activityId;
   panel.querySelector("[data-project-save]")?.addEventListener("click", () => saveScratchProject(activityId));
@@ -616,6 +756,10 @@ async function boot() {
   renderBlocks();
   hydrateEditors();
   await hydrateFromServer();
+  if (state.currentUser && !state.users[state.currentUser]?.passwordHash) {
+    state.currentUser = "";
+    saveState({ syncServer: false });
+  }
   hydrateSession();
   hydrateProjectSavePanels();
 }

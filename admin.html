@@ -1,0 +1,68 @@
+﻿<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AlgoScratch — Administration</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="admin-body">
+  <header class="site-header admin-header">
+    <a class="brand" href="admin.html" aria-label="AlgoScratch administration">
+      <span class="brand-mark">AS</span>
+      <span>AlgoScratch</span>
+    </a>
+    <span class="admin-tag">Administration</span>
+    <div class="session-actions">
+      <a class="admin-back-link" href="index.html">Voir l&rsquo;espace &eacute;l&egrave;ve</a>
+    </div>
+  </header>
+  <main class="page-main">
+    <section class="learning-layout admin-layout">
+      <aside class="course-sidebar" aria-label="Arborescence administration">
+        <button class="sidebar-toggle" id="admin-sidebar-toggle" type="button" aria-expanded="true"><span>Masquer</span></button>
+        <nav class="course-tree admin-tree">
+          <h2>Parcours</h2>
+          <ol>
+            <li class="tree-home"><a class="active" href="admin.html">Accueil</a></li>
+            <li class="tree-group tree-notebook active">
+              <span>I</span><div>
+                <strong>Activit&eacute;s Scratch</strong>
+                <a class="admin-sequence-link" href="admin-premiers-pas.html">Premiers pas</a>
+              </div>
+            </li>
+            <li class="tree-group tree-notebook"><span>II</span><div><strong>&Eacute;nigmes Scratch</strong></div></li>
+            <li class="tree-group tree-interactive"><span>III</span><div><strong>Activit&eacute;s sur feuilles</strong></div></li>
+            <li class="tree-group tree-interactive"><span>IV</span><div><strong>&Eacute;nigmes sur feuilles</strong></div></li>
+          </ol>
+        </nav>
+      </aside>
+      <div class="admin-workspace">
+        <section class="admin-page-header">
+          <p class="eyebrow">Administration</p>
+          <h1>Suivi des apprentissages</h1>
+          <p>Consulte les progressions par sous-chapitre et valide manuellement le travail Scratch des &eacute;l&egrave;ves.</p>
+        </section>
+        <section class="admin-warning" role="note">
+          <strong>Prototype local</strong>
+          <p>Cette interface n&rsquo;est pas encore prot&eacute;g&eacute;e par un compte enseignant. Elle sert &agrave; valider le fonctionnement avant la mise en ligne s&eacute;curis&eacute;e.</p>
+        </section>
+        <section class="admin-module-grid" aria-label="Sous-chapitres disponibles">
+          <article class="admin-module-card available">
+            <div class="admin-module-heading"><span>I</span><p class="eyebrow">Activit&eacute;s Scratch</p></div>
+            <h2>Premiers pas</h2>
+            <p>Activit&eacute;s 1, 2 et 3 — d&eacute;placements, directions et premiers trac&eacute;s.</p>
+            <a class="primary-link" href="admin-premiers-pas.html">Ouvrir le suivi</a>
+          </article>
+          <article class="admin-module-card upcoming">
+            <p class="eyebrow">&Agrave; venir</p>
+            <h2>Autres sous-chapitres</h2>
+            <p>Ils appara&icirc;tront ici au fur et &agrave; mesure de leur cr&eacute;ation.</p>
+          </article>
+        </section>
+      </div>
+    </section>
+  </main>
+  <script src="admin.js"></script>
+</body>
+</html>

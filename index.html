@@ -14,12 +14,6 @@
       <span>AlgoScratch</span>
     </a>
 
-    <nav class="main-nav" aria-label="Navigation principale">
-      <a href="index.html">Accueil</a>
-      <a href="#parcours">Parcours</a>
-      <a href="activite-1.html">Première activité</a>
-    </nav>
-
     <div class="session-actions">
       <div class="session-pill" id="session-pill">Mode découverte</div>
       <button class="logout-button" id="logout-button" type="button" disabled>Se déconnecter</button>
@@ -39,29 +33,32 @@
             <li class="tree-home">
               <a class="active" href="index.html">Accueil</a>
             </li>
-            <li class="tree-group">
+            <li class="tree-group tree-notebook">
               <span>I</span>
               <div>
                 <strong>Activités Scratch</strong>
-                <span class="tree-section-title">Premiers pas</span>
-                <a class="tree-subitem" href="activite-1.html">Activité 1</a>
-                <a class="tree-subitem" href="activite-2.html">Activité 2</a>
-                <a class="tree-subitem" href="activite-3.html">Activité 3</a>
-              </div>
+                <button class="tree-section-toggle" type="button" data-tree-toggle="premiers-pas" aria-expanded="true" aria-controls="premiers-pas-items">Premiers pas</button>
+
+                <div class="tree-subitems" id="premiers-pas-items">
+                <a class="tree-subitem" href="activite-1.html" data-activity-id="activite-1">Activité 1</a>
+                <a class="tree-subitem" href="activite-2.html" data-activity-id="activite-2">Activité 2</a>
+                <a class="tree-subitem" href="activite-3.html" data-activity-id="activite-3">Activité 3</a>
+
+                </div>              </div>
             </li>
-            <li class="tree-group">
+            <li class="tree-group tree-notebook">
               <span>II</span>
               <div>
                 <strong>Énigmes Scratch</strong>
               </div>
             </li>
-            <li class="tree-group">
+            <li class="tree-group tree-interactive">
               <span>III</span>
               <div>
                 <strong>Activités sur feuilles</strong>
               </div>
             </li>
-            <li class="tree-group">
+            <li class="tree-group tree-interactive">
               <span>IV</span>
               <div>
                 <strong>Énigmes sur feuilles</strong>
@@ -83,17 +80,23 @@
           </div>
 
           <section class="login-card" aria-labelledby="login-title">
-            <p class="eyebrow">Identifiant élève</p>
+            <p class="eyebrow">Connexion élève</p>
             <h2 id="login-title">Reprendre sa progression</h2>
-            <form id="login-form">
-              <label for="username">Choisis un identifiant</label>
-              <div class="inline-form">
-                <input id="username" name="username" type="text" minlength="2" placeholder="ex. lina6e" required>
-                <button type="submit">Entrer</button>
+            <form id="login-form" class="login-form">
+              <div class="login-field">
+                <label for="username">Identifiant</label>
+                <input id="username" name="username" type="text" minlength="2" placeholder="ex. lina6e" autocomplete="username" required>
               </div>
+              <div class="login-field">
+                <label for="password">Mot de passe</label>
+                <input id="password" name="password" type="password" minlength="6" maxlength="6" pattern="[A-Za-z0-9]{6}" placeholder="6 lettres ou chiffres" autocomplete="current-password" aria-describedby="password-help" required>
+              </div>
+              <p class="password-help" id="password-help">Exactement 6 caractères : lettres ou chiffres.</p>
+              <button class="login-submit" type="submit">Se connecter</button>
+              <p class="login-feedback" id="login-feedback" role="status" aria-live="polite"></p>
             </form>
             <p class="helper">
-              Pour le prototype, l’identifiant et la progression sont enregistrés localement dans ce navigateur.
+              Version de test : le mot de passe protège la progression, sans constituer encore un compte sécurisé en ligne.
             </p>
           </section>
         </section>
@@ -130,13 +133,13 @@
 
         <section class="home-callout">
           <div>
-            <p class="eyebrow">Commencer</p>
+            <p class="eyebrow" id="continuation-label">Commencer</p>
             <h2>Chapitre 1 · Premiers pas</h2>
             <p>
               Une première leçon pour découvrir la séquence d’instructions, les déplacements et les directions.
             </p>
           </div>
-          <a class="primary-link" href="activite-1.html">Ouvrir l’activité 1</a>
+          <a class="primary-link" id="continuation-link" href="activite-1.html">Ouvrir l’activité 1</a>
         </section>
       </div>
     </section>

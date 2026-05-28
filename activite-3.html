@@ -13,12 +13,6 @@
       <span>AlgoScratch</span>
     </a>
 
-    <nav class="main-nav" aria-label="Navigation principale">
-      <a href="index.html">Accueil</a>
-      <a href="index.html#parcours">Parcours</a>
-      <a href="activite-1.html">Premiers pas</a>
-    </nav>
-
     <div class="session-actions">
       <div class="session-pill" id="session-pill">Mode découverte</div>
       <button class="logout-button" id="logout-button" type="button" disabled>Se déconnecter</button>
@@ -38,25 +32,28 @@
             <li class="tree-home">
               <a href="index.html">Accueil</a>
             </li>
-            <li class="tree-group active">
+            <li class="tree-group tree-notebook active">
               <span>I</span>
               <div>
                 <strong>Activités Scratch</strong>
-                <span class="tree-section-title active-section">Premiers pas</span>
-                <a class="tree-subitem" href="activite-1.html">Activité 1</a>
-                <a class="tree-subitem" href="activite-2.html">Activité 2</a>
-                <a class="tree-subitem active" href="activite-3.html">Activité 3</a>
-              </div>
+                <button class="tree-section-toggle active-section" type="button" data-tree-toggle="premiers-pas" aria-expanded="true" aria-controls="premiers-pas-items">Premiers pas</button>
+
+                <div class="tree-subitems" id="premiers-pas-items">
+                <a class="tree-subitem" href="activite-1.html" data-activity-id="activite-1">Activité 1</a>
+                <a class="tree-subitem" href="activite-2.html" data-activity-id="activite-2">Activité 2</a>
+                <a class="tree-subitem active" href="activite-3.html" data-activity-id="activite-3">Activité 3</a>
+
+                </div>              </div>
             </li>
-            <li class="tree-group">
+            <li class="tree-group tree-notebook">
               <span>II</span>
               <div><strong>Énigmes Scratch</strong></div>
             </li>
-            <li class="tree-group">
+            <li class="tree-group tree-interactive">
               <span>III</span>
               <div><strong>Activités sur feuilles</strong></div>
             </li>
-            <li class="tree-group">
+            <li class="tree-group tree-interactive">
               <span>IV</span>
               <div><strong>Énigmes sur feuilles</strong></div>
             </li>
