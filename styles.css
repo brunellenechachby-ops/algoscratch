@@ -1908,3 +1908,36 @@ footer {
 .tree-subitem.is-validated {
   color: #063f1b;
 }
+
+/* Scratch editor mode switch */
+.scratch-mode-controls {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 1rem 0 0.75rem;
+  padding: 0.85rem 1rem;
+  background: #f8fafc;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.scratch-mode-controls div {
+  display: grid;
+  gap: 0.18rem;
+}
+
+.scratch-mode-controls strong {
+  color: var(--text);
+}
+
+.scratch-mode-controls span {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.secondary-button.compact {
+  min-height: 34px;
+  padding: 0 0.75rem;
+  white-space: nowrap;
+}

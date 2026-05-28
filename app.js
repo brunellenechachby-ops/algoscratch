@@ -800,6 +800,50 @@ function hydrateEditors() {
   });
 }
 
+function getScratchEditorUrl(activityId, mode = "simple") {
+  const url = new URL("http://localhost:8601/");
+  url.searchParams.set("activity", activityId);
+  url.searchParams.set("mode", mode);
+  return url.toString();
+}
+
+function hydrateScratchModeControls() {
+  els.scratchEditors.forEach((editor) => {
+    const activityId = editor.dataset.activityId;
+    if (!activityDestinations[activityId] || editor.dataset.modeControlsReady) return;
+
+    const wrapper = editor.closest(".editor-frame-wrap");
+    if (!wrapper) return;
+
+    const controls = document.createElement("div");
+    controls.className = "scratch-mode-controls";
+    controls.innerHTML = `
+      <div>
+        <strong>Éditeur Scratch</strong>
+        <span data-scratch-mode-label>Mode guidé : blocs utiles uniquement</span>
+      </div>
+      <button class="secondary-button compact" type="button" data-scratch-mode-toggle>Mode complet</button>
+    `;
+    wrapper.before(controls);
+
+    const label = controls.querySelector("[data-scratch-mode-label]");
+    const button = controls.querySelector("[data-scratch-mode-toggle]");
+    let mode = "simple";
+    editor.src = getScratchEditorUrl(activityId, mode);
+
+    button.addEventListener("click", () => {
+      mode = mode === "simple" ? "full" : "simple";
+      editor.src = getScratchEditorUrl(activityId, mode);
+      label.textContent = mode === "simple"
+        ? "Mode guidé : blocs utiles uniquement"
+        : "Mode complet : tous les blocs Scratch";
+      button.textContent = mode === "simple" ? "Mode complet" : "Mode guidé";
+    });
+
+    editor.dataset.modeControlsReady = "true";
+  });
+}
+
 function findEditorForActivity(activityId) {
   return els.scratchEditors.find((editor) => editor.dataset.activityId === activityId);
 }
@@ -977,6 +1021,7 @@ window.addEventListener("message", handleScratchBridgeMessage);
 
 async function boot() {
   renderBlocks();
+  hydrateScratchModeControls();
   hydrateEditors();
   await ensureSupabaseSession();
   await hydrateFromServer();
