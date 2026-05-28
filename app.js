@@ -1,6 +1,9 @@
 ﻿const STORAGE_KEY = "algoscratch-prototype";
 const SERVER_STATE_ENDPOINT = "/api/state";
 const SERVER_STORAGE_ENABLED = ["localhost", "127.0.0.1"].includes(window.location.hostname);
+const SCRATCH_EDITOR_LOCAL_URL = "http://localhost:8601/";
+const SCRATCH_EDITOR_PUBLIC_URL = "https://brunellenechachby-ops.github.io/algoscratch-scratch-gui/";
+const SCRATCH_EDITOR_BASE_URL = SERVER_STORAGE_ENABLED ? SCRATCH_EDITOR_LOCAL_URL : SCRATCH_EDITOR_PUBLIC_URL;
 
 const expectedProgram = [
   "quand le drapeau vert est cliqué",
@@ -801,7 +804,7 @@ function hydrateEditors() {
 }
 
 function getScratchEditorUrl(activityId, mode = "simple") {
-  const url = new URL("http://localhost:8601/");
+  const url = new URL(SCRATCH_EDITOR_BASE_URL);
   url.searchParams.set("activity", activityId);
   url.searchParams.set("mode", mode);
   return url.toString();
@@ -882,7 +885,7 @@ function createScratchRequest(type, activityId, payload = {}) {
     requestId,
     activityId,
     ...payload,
-  }, "http://localhost:8601");
+  }, new URL(SCRATCH_EDITOR_BASE_URL).origin);
 
   return request;
 }
