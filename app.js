@@ -133,7 +133,11 @@ async function persistStateToServer() {
 }
 
 function usernameToEmail(username) {
-  return `${username.toLowerCase()}@algoscratch.local`;
+  const normalizedUsername = username.toLowerCase();
+  if (normalizedUsername === "prof") {
+    return "prof@algoscratch.local";
+  }
+  return `${normalizedUsername}@eleves.algoscratch.fr`;
 }
 
 function createEmptyProgress() {
