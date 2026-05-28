@@ -10,6 +10,7 @@ const adminEls = {
   layout: document.querySelector(".admin-layout"),
   sidebarToggle: document.querySelector("#admin-sidebar-toggle"),
   refresh: document.querySelector("#refresh-admin"),
+  logout: document.querySelector("#admin-logout-button"),
   tableBody: document.querySelector("#progress-table-body"),
   status: document.querySelector("#admin-load-status"),
   empty: document.querySelector("#admin-empty"),
@@ -324,8 +325,26 @@ async function handleAdminAction(event) {
   }
 }
 
+async function logoutAdmin() {
+  if (adminSupabaseClient) {
+    await adminSupabaseClient.auth.signOut();
+  }
+
+  try {
+    const savedState = JSON.parse(localStorage.getItem("algoscratch-prototype")) || {};
+    savedState.currentUser = "";
+    delete savedState.supabaseUserId;
+    localStorage.setItem("algoscratch-prototype", JSON.stringify(savedState));
+  } catch (error) {
+    console.warn("Déconnexion locale incomplète :", error);
+  }
+
+  window.location.href = "index.html";
+}
+
 adminEls.sidebarToggle?.addEventListener("click", toggleAdminSidebar);
 adminEls.refresh?.addEventListener("click", loadAdminState);
+adminEls.logout?.addEventListener("click", logoutAdmin);
 adminEls.tableBody?.addEventListener("click", handleAdminAction);
 renderAdminSidebar();
 loadAdminState();

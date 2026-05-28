@@ -676,6 +676,10 @@ async function logout() {
   hydrateProjectSavePanels();
   if (els.password) els.password.value = "";
   setLoginFeedback("Tu es déconnecté.", "success");
+
+  if (!window.location.pathname.endsWith("/index.html") && window.location.pathname !== "/") {
+    window.location.href = "index.html";
+  }
 }
 
 function inferLastActivity(progress) {
