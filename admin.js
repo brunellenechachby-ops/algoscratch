@@ -16,6 +16,11 @@ const adminEls = {
 };
 
 let adminState = {users: {}};
+let adminUserMap = {};
+const adminSupabaseClient = window.supabase && window.ALGO_SUPABASE
+  ? window.supabase.createClient(window.ALGO_SUPABASE.url, window.ALGO_SUPABASE.key)
+  : null;
+const isLocalPreview = ["localhost", "127.0.0.1", ""].includes(window.location.hostname);
 
 function renderAdminSidebar() {
   if (!adminEls.layout || !adminEls.sidebarToggle) return;
@@ -39,6 +44,97 @@ function normalizeProgress(progress = {}) {
     activityVisits: progress.activityVisits || {},
     validations: progress.validations || {},
   };
+}
+
+function createAdminProgressFromRows(progressRows = [], projectRows = []) {
+  const progress = normalizeProgress({});
+  let latestTime = 0;
+
+  progressRows.forEach((row) => {
+    const activityId = row.activity_id;
+    if (!adminActivities[activityId]) return;
+
+    if (row.started_at || row.last_opened_at) {
+      progress.activityVisits[activityId] = {
+        startedAt: row.started_at || row.last_opened_at,
+        lastOpenedAt: row.last_opened_at || row.started_at,
+      };
+    }
+
+    const openedTime = Date.parse(row.last_opened_at || row.started_at || 0);
+    if (openedTime > latestTime) {
+      latestTime = openedTime;
+      progress.lastActivity = activityId;
+    }
+
+    if (row.quiz_passed) {
+      progress.quizzes[activityId] = true;
+    }
+
+    if (row.project_saved) {
+      progress.scratchProjects[activityId] = {savedAt: row.updated_at || row.last_opened_at};
+    }
+
+    if (row.teacher_validated) {
+      progress.validations[activityId] = {
+        validated: true,
+        validatedAt: row.teacher_validated_at || row.updated_at,
+      };
+    }
+  });
+
+  projectRows.forEach((row) => {
+    if (!adminActivities[row.activity_id]) return;
+    progress.scratchProjects[row.activity_id] = {
+      ...(row.project_data || {}),
+      savedAt: row.saved_at || row.project_data?.savedAt,
+    };
+  });
+
+  return progress;
+}
+
+async function loadSupabaseAdminState() {
+  if (!adminSupabaseClient) return null;
+
+  const {data: sessionData} = await adminSupabaseClient.auth.getSession();
+  const session = sessionData?.session;
+  if (!session?.user) {
+    throw new Error("Connecte-toi d’abord avec le compte prof depuis la page d’accueil.");
+  }
+
+  const {data: currentProfile, error: profileError} = await adminSupabaseClient
+    .from("profiles")
+    .select("role")
+    .eq("id", session.user.id)
+    .single();
+
+  if (profileError || currentProfile?.role !== "admin") {
+    throw new Error("Le compte connecté n’a pas le rôle admin.");
+  }
+
+  const [{data: profiles, error: profilesError}, {data: progressRows, error: progressError}, {data: projectRows, error: projectError}] = await Promise.all([
+    adminSupabaseClient.from("profiles").select("id, username, role").order("username"),
+    adminSupabaseClient.from("activity_progress").select("*"),
+    adminSupabaseClient.from("scratch_projects").select("*"),
+  ]);
+
+  if (profilesError) throw profilesError;
+  if (progressError) throw progressError;
+  if (projectError) throw projectError;
+
+  adminUserMap = {};
+  const users = {};
+  (profiles || [])
+    .filter((profile) => profile.role !== "admin")
+    .forEach((profile) => {
+      adminUserMap[profile.username] = profile.id;
+      const userProgressRows = (progressRows || []).filter((row) => row.user_id === profile.id);
+      const userProjectRows = (projectRows || []).filter((row) => row.user_id === profile.id);
+      users[profile.username] = createAdminProgressFromRows(userProgressRows, userProjectRows);
+    });
+
+  return {users};
 }
 
 function hasStarted(progress, activityId) {
@@ -123,8 +219,10 @@ function renderProgressTable() {
     reset.className = "reset-password-button";
     reset.dataset.action = "reset-password";
     reset.dataset.username = username;
-    reset.textContent = progress.passwordHash ? "R\u00e9initialiser le mot de passe" : "Mot de passe \u00e0 cr\u00e9er";
-    reset.disabled = !progress.passwordHash;
+    reset.textContent = adminUserMap[username]
+      ? "Reset serveur \u00e0 venir"
+      : (progress.passwordHash ? "R\u00e9initialiser le mot de passe" : "Mot de passe \u00e0 cr\u00e9er");
+    reset.disabled = adminUserMap[username] || !progress.passwordHash;
     account.append(reset);
     row.append(account);
     adminEls.tableBody.append(row);
@@ -140,9 +238,43 @@ async function persistAdminState() {
   if (!response.ok) throw new Error("Sauvegarde impossible.");
 }
 
+async function persistSupabaseValidation(username, activityId, validated) {
+  const userId = adminUserMap[username];
+  if (!adminSupabaseClient || !userId) return false;
+
+  const now = new Date().toISOString();
+  const {error} = await adminSupabaseClient
+    .from("activity_progress")
+    .upsert({
+      user_id: userId,
+      activity_id: activityId,
+      teacher_validated: validated,
+      teacher_validated_at: validated ? now : null,
+      updated_at: now,
+    }, {onConflict: "user_id,activity_id"});
+
+  if (error) throw error;
+  return true;
+}
+
 async function loadAdminState() {
   if (!adminEls.tableBody) return;
   adminEls.status.textContent = "Chargement des \u00e9l\u00e8ves…";
+
+  if (adminSupabaseClient) {
+    try {
+      adminState = await loadSupabaseAdminState();
+      renderProgressTable();
+      adminEls.status.textContent = "Donn\u00e9es Supabase \u00e0 jour";
+      adminEls.status.className = "admin-load-status success";
+      return;
+    } catch (error) {
+      adminEls.status.textContent = `${error.message} Mode local si serveur disponible.`;
+      adminEls.status.className = "admin-load-status error";
+      if (!isLocalPreview) return;
+    }
+  }
+
   try {
     const response = await fetch(ADMIN_STATE_ENDPOINT, {cache: "no-store"});
     if (!response.ok) throw new Error("Serveur non disponible");
@@ -161,24 +293,28 @@ async function handleAdminAction(event) {
   if (!button) return;
   const username = button.dataset.username;
   const progress = normalizeProgress(adminState.users[username]);
+  let handledBySupabase = false;
 
-  if (button.dataset.action === "validation") {
-    const activityId = button.dataset.activityId;
-    const currentlyValidated = Boolean(progress.validations[activityId]?.validated);
-    progress.validations[activityId] = currentlyValidated
-      ? {validated: false, updatedAt: new Date().toISOString()}
-      : {validated: true, validatedAt: new Date().toISOString()};
-  }
-
-  if (button.dataset.action === "reset-password") {
-    const confirmed = window.confirm(`R\u00e9initialiser le mot de passe de ${username} ? L\u2019\u00e9l\u00e8ve devra en cr\u00e9er un nouveau lors de sa prochaine connexion.`);
-    if (!confirmed) return;
-    delete progress.passwordHash;
-  }
-
-  adminState.users[username] = progress;
   try {
-    await persistAdminState();
+    if (button.dataset.action === "validation") {
+      const activityId = button.dataset.activityId;
+      const currentlyValidated = Boolean(progress.validations[activityId]?.validated);
+      progress.validations[activityId] = currentlyValidated
+        ? {validated: false, updatedAt: new Date().toISOString()}
+        : {validated: true, validatedAt: new Date().toISOString()};
+      handledBySupabase = await persistSupabaseValidation(username, activityId, !currentlyValidated);
+    }
+
+    if (button.dataset.action === "reset-password") {
+      const confirmed = window.confirm(`R\u00e9initialiser le mot de passe de ${username} ? L\u2019\u00e9l\u00e8ve devra en cr\u00e9er un nouveau lors de sa prochaine connexion.`);
+      if (!confirmed) return;
+      delete progress.passwordHash;
+    }
+
+    adminState.users[username] = progress;
+    if (!handledBySupabase) {
+      await persistAdminState();
+    }
     renderProgressTable();
     adminEls.status.textContent = "Modification enregistr\u00e9e";
     adminEls.status.className = "admin-load-status success";

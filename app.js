@@ -1,6 +1,6 @@
 ﻿const STORAGE_KEY = "algoscratch-prototype";
 const SERVER_STATE_ENDPOINT = "/api/state";
-const SERVER_STORAGE_ENABLED = window.location.protocol !== "file:";
+const SERVER_STORAGE_ENABLED = ["localhost", "127.0.0.1"].includes(window.location.hostname);
 
 const expectedProgram = [
   "quand le drapeau vert est cliqué",
@@ -66,9 +66,14 @@ const els = {
 
 const pendingScratchRequests = new Map();
 let serverSaveTimer = null;
+let supabaseSaveTimer = null;
 let activityVisitRecorded = false;
 
 let state = loadState();
+const supabaseClient = window.supabase && window.ALGO_SUPABASE
+  ? window.supabase.createClient(window.ALGO_SUPABASE.url, window.ALGO_SUPABASE.key)
+  : null;
+let supabaseSession = null;
 
 function loadState() {
   try {
@@ -92,6 +97,7 @@ function saveState(options = {}) {
 
   if (options.syncServer !== false) {
     queueServerStateSave();
+    queueSupabaseProgressSave();
   }
 }
 
@@ -126,6 +132,160 @@ async function persistStateToServer() {
   }
 }
 
+function usernameToEmail(username) {
+  return `${username.toLowerCase()}@algoscratch.local`;
+}
+
+function createEmptyProgress() {
+  return {
+    programBuilt: false,
+    quizPassed: false,
+    quizzes: {},
+    scratchProjects: {},
+    lessonCompleted: false,
+    assembledProgram: [],
+    activityVisits: {},
+    validations: {},
+  };
+}
+
+async function ensureSupabaseSession() {
+  if (!supabaseClient) return null;
+  const {data, error} = await supabaseClient.auth.getSession();
+  if (error) {
+    console.warn("Session Supabase indisponible :", error);
+    return null;
+  }
+  supabaseSession = data.session;
+  return supabaseSession;
+}
+
+function queueSupabaseProgressSave() {
+  if (!supabaseClient || !state.currentUser) return;
+
+  window.clearTimeout(supabaseSaveTimer);
+  supabaseSaveTimer = window.setTimeout(() => {
+    persistProgressToSupabase();
+  }, 450);
+}
+
+async function persistProgressToSupabase() {
+  if (!supabaseClient || !state.currentUser) return;
+
+  const session = supabaseSession || await ensureSupabaseSession();
+  if (!session?.user) return;
+
+  const progress = getUserProgress();
+  const now = new Date().toISOString();
+  const progressRows = Object.keys(activityDestinations).map((activityId) => ({
+    user_id: session.user.id,
+    activity_id: activityId,
+    started_at: progress.activityVisits?.[activityId]?.startedAt || null,
+    last_opened_at: progress.activityVisits?.[activityId]?.lastOpenedAt || null,
+    quiz_passed: Boolean(progress.quizzes?.[activityId]),
+    project_saved: Boolean(progress.scratchProjects?.[activityId]),
+    updated_at: now,
+  }));
+
+  try {
+    await supabaseClient
+      .from("activity_progress")
+      .upsert(progressRows, {onConflict: "user_id,activity_id"});
+
+    const projectRows = Object.entries(progress.scratchProjects || {}).map(([activityId, project]) => ({
+      user_id: session.user.id,
+      activity_id: activityId,
+      project_data: project,
+      saved_at: project.savedAt || now,
+    }));
+
+    if (projectRows.length) {
+      await supabaseClient
+        .from("scratch_projects")
+        .upsert(projectRows, {onConflict: "user_id,activity_id"});
+    }
+  } catch (error) {
+    console.warn("Sauvegarde Supabase indisponible :", error);
+  }
+}
+
+function applySupabaseProgress(username, rows = [], projects = []) {
+  const progress = {
+    ...createEmptyProgress(),
+    ...(state.users[username] || {}),
+    quizzes: {},
+    scratchProjects: {},
+    activityVisits: {},
+    validations: {},
+  };
+
+  rows.forEach((row) => {
+    const activityId = row.activity_id;
+    if (!activityDestinations[activityId]) return;
+
+    if (row.started_at || row.last_opened_at) {
+      progress.activityVisits[activityId] = {
+        startedAt: row.started_at || row.last_opened_at,
+        lastOpenedAt: row.last_opened_at || row.started_at,
+      };
+      if (!progress.lastActivity || Date.parse(row.last_opened_at || 0) > Date.parse(progress.activityVisits[progress.lastActivity]?.lastOpenedAt || 0)) {
+        progress.lastActivity = activityId;
+      }
+    }
+
+    if (row.quiz_passed) {
+      progress.quizzes[activityId] = true;
+      progress.quizPassed = true;
+    }
+
+    if (row.project_saved) {
+      progress.scratchProjects[activityId] ||= {
+        savedAt: row.updated_at || row.last_opened_at || new Date().toISOString(),
+      };
+    }
+
+    if (row.teacher_validated) {
+      progress.validations[activityId] = {
+        validated: true,
+        validatedAt: row.teacher_validated_at || row.updated_at,
+      };
+    }
+  });
+
+  projects.forEach((project) => {
+    if (!activityDestinations[project.activity_id]) return;
+    progress.scratchProjects[project.activity_id] = {
+      ...(project.project_data || {}),
+      savedAt: project.saved_at || project.project_data?.savedAt || new Date().toISOString(),
+    };
+  });
+
+  state.users[username] = progress;
+  saveState({syncServer: false});
+  return progress;
+}
+
+async function loadSupabaseProgress(username) {
+  if (!supabaseClient) return null;
+  const session = supabaseSession || await ensureSupabaseSession();
+  if (!session?.user) return null;
+
+  const [{data: progressRows, error: progressError}, {data: projectRows, error: projectError}] = await Promise.all([
+    supabaseClient
+      .from("activity_progress")
+      .select("*")
+      .eq("user_id", session.user.id),
+    supabaseClient
+      .from("scratch_projects")
+      .select("*")
+      .eq("user_id", session.user.id),
+  ]);
+
+  if (progressError) console.warn("Progression Supabase indisponible :", progressError);
+  if (projectError) console.warn("Projets Supabase indisponibles :", projectError);
+  return applySupabaseProgress(username, progressRows || [], projectRows || []);
+}
+
 async function hydrateFromServer() {
   if (!SERVER_STORAGE_ENABLED) return;
 
@@ -153,28 +313,11 @@ async function hydrateFromServer() {
 
 function getUserProgress() {
   if (!state.currentUser) {
-    return {
-      programBuilt: false,
-      quizPassed: false,
-      quizzes: {},
-      lessonCompleted: false,
-      assembledProgram: [],
-      activityVisits: {},
-      validations: {},
-    };
+    return createEmptyProgress();
   }
 
   if (!state.users[state.currentUser]) {
-    state.users[state.currentUser] = {
-      programBuilt: false,
-      quizPassed: false,
-      quizzes: {},
-      scratchProjects: {},
-      lessonCompleted: false,
-      assembledProgram: [],
-      activityVisits: {},
-      validations: {},
-    };
+    state.users[state.currentUser] = createEmptyProgress();
     saveState();
   }
 
@@ -417,6 +560,49 @@ async function hashPassword(password) {
   return Array.from(new Uint8Array(digest), (byte) => byte.toString(16).padStart(2, "0")).join("");
 }
 
+async function loginWithSupabase(username, password) {
+  if (!supabaseClient) return null;
+
+  const email = usernameToEmail(username);
+  let authResult = await supabaseClient.auth.signInWithPassword({email, password});
+  let isNewAccount = false;
+
+  if (authResult.error) {
+    authResult = await supabaseClient.auth.signUp({
+      email,
+      password,
+      options: {
+        data: {username},
+      },
+    });
+    isNewAccount = true;
+  }
+
+  if (authResult.error) {
+    throw authResult.error;
+  }
+
+  supabaseSession = authResult.data.session || (await ensureSupabaseSession());
+  if (!supabaseSession?.user) {
+    throw new Error("Compte créé, mais la session n’est pas active. Dans Supabase, désactive la confirmation email pour les comptes de test.");
+  }
+
+  await supabaseClient
+    .from("profiles")
+    .upsert(
+      {id: supabaseSession.user.id, username, role: username === "prof" ? "admin" : "student"},
+      {onConflict: "id", ignoreDuplicates: true},
+    );
+
+  const {data: profile} = await supabaseClient
+    .from("profiles")
+    .select("role")
+    .eq("id", supabaseSession.user.id)
+    .single();
+
+  return {isNewAccount, role: profile?.role || "student"};
+}
+
 async function login(event) {
   event.preventDefault();
   const username = els.username.value.trim();
@@ -429,15 +615,29 @@ async function login(event) {
   }
 
   await hydrateFromServer();
+  let supabaseLogin = null;
+  try {
+    supabaseLogin = await loginWithSupabase(username, password);
+  } catch (error) {
+    if (supabaseClient) {
+      setLoginFeedback(`Connexion Supabase impossible : ${error.message}`, "error");
+      return;
+    }
+  }
+
   const passwordHash = await hashPassword(password);
   const knownUser = state.users[username];
 
-  if (knownUser?.passwordHash && knownUser.passwordHash !== passwordHash) {
+  if (!supabaseLogin && knownUser?.passwordHash && knownUser.passwordHash !== passwordHash) {
     setLoginFeedback("Mot de passe incorrect pour cet identifiant.", "error");
     return;
   }
 
   state.currentUser = username;
+  if (supabaseSession?.user) {
+    state.supabaseUserId = supabaseSession.user.id;
+    await loadSupabaseProgress(username);
+  }
   const progress = getUserProgress();
   const isNewPassword = !progress.passwordHash;
   progress.passwordHash ||= passwordHash;
@@ -445,13 +645,28 @@ async function login(event) {
   hydrateSession();
   hydrateProjectSavePanels();
   els.password.value = "";
-  setLoginFeedback(isNewPassword ? "Identifiant enregistré. Ta progression pourra être retrouvée." : "Connexion réussie.", "success");
+  setLoginFeedback(
+    supabaseLogin
+      ? (supabaseLogin.isNewAccount ? "Compte Supabase créé. Ta progression sera sauvegardée en ligne." : "Connexion Supabase réussie.")
+      : (isNewPassword ? "Identifiant enregistré. Ta progression pourra être retrouvée." : "Connexion réussie."),
+    "success",
+  );
+
+  if (supabaseLogin?.role === "admin") {
+    window.location.href = "admin.html";
+  }
 }
 
-function logout() {
+async function logout() {
   if (!state.currentUser) return;
 
+  if (supabaseClient) {
+    await supabaseClient.auth.signOut();
+    supabaseSession = null;
+  }
+
   state.currentUser = "";
+  delete state.supabaseUserId;
   saveState({ syncServer: false });
   hydrateSession();
   hydrateProjectSavePanels();
@@ -755,7 +970,12 @@ window.addEventListener("message", handleScratchBridgeMessage);
 async function boot() {
   renderBlocks();
   hydrateEditors();
+  await ensureSupabaseSession();
   await hydrateFromServer();
+  if (state.currentUser && supabaseSession?.user) {
+    state.supabaseUserId = supabaseSession.user.id;
+    await loadSupabaseProgress(state.currentUser);
+  }
   if (state.currentUser && !state.users[state.currentUser]?.passwordHash) {
     state.currentUser = "";
     saveState({ syncServer: false });
