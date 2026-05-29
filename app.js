@@ -69,6 +69,8 @@ const els = {
 
 const pendingScratchRequests = new Map();
 const autoLoadedScratchProjects = new Set();
+const SCRATCH_REQUEST_TIMEOUT_MS = 60000;
+const SCRATCH_AUTOLOAD_DELAY_MS = 2500;
 let serverSaveTimer = null;
 let supabaseSaveTimer = null;
 let activityVisitRecorded = false;
@@ -866,7 +868,7 @@ function setProjectSaveStatus(activityId, message, stateName = "") {
   status.textContent = message;
 }
 
-function createScratchRequest(type, activityId, payload = {}) {
+function createScratchRequest(type, activityId, payload = {}, options = {}) {
   const editor = findEditorForActivity(activityId);
   if (!editor?.contentWindow) {
     return Promise.reject(new Error("L’éditeur Scratch n’est pas encore chargé."));
@@ -877,17 +879,19 @@ function createScratchRequest(type, activityId, payload = {}) {
     const timeoutId = window.setTimeout(() => {
       pendingScratchRequests.delete(requestId);
       reject(new Error("Scratch n’a pas répondu à temps."));
-    }, 12000);
+    }, options.timeoutMs || SCRATCH_REQUEST_TIMEOUT_MS);
 
     pendingScratchRequests.set(requestId, {resolve, reject, timeoutId});
   });
 
-  editor.contentWindow.postMessage({
+  const message = {
     type,
     requestId,
     activityId,
     ...payload,
-  }, new URL(SCRATCH_EDITOR_BASE_URL).origin);
+  };
+  const transfer = payload.projectData instanceof ArrayBuffer ? [payload.projectData] : undefined;
+  editor.contentWindow.postMessage(message, new URL(SCRATCH_EDITOR_BASE_URL).origin, transfer);
 
   return request;
 }
@@ -920,6 +924,10 @@ function handleScratchBridgeMessage(event) {
   }
 }
 
+function wait(ms) {
+  return new Promise((resolve) => window.setTimeout(resolve, ms));
+}
+
 async function autoLoadScratchProject(activityId) {
   if (!state.currentUser || autoLoadedScratchProjects.has(activityId)) return;
 
@@ -929,6 +937,7 @@ async function autoLoadScratchProject(activityId) {
   autoLoadedScratchProjects.add(activityId);
   try {
     setProjectSaveStatus(activityId, "Projet sauvegard\u00e9 trouv\u00e9 : rechargement automatique\u2026");
+    await wait(SCRATCH_AUTOLOAD_DELAY_MS);
     await loadScratchProject(activityId, {automatic: true});
   } catch (error) {
     autoLoadedScratchProjects.delete(activityId);
@@ -974,7 +983,7 @@ async function loadScratchProject(activityId, options = {}) {
   try {
     setProjectSaveStatus(activityId, "Chargement du projet sauvegardé…");
     const projectData = base64ToArrayBuffer(savedProject.projectBase64);
-    await createScratchRequest("algoscratch:scratch:import-project", activityId, {projectData});
+    await createScratchRequest("algoscratch:scratch:import-project", activityId, {projectData}, {timeoutMs: SCRATCH_REQUEST_TIMEOUT_MS});
     setProjectSaveStatus(activityId, options.automatic ? "Projet Scratch restaur\u00e9 automatiquement." : "Projet Scratch recharg\u00e9.", "success");
   } catch (error) {
     setProjectSaveStatus(activityId, `Impossible de recharger : ${error.message}`, "error");
