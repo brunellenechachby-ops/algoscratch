@@ -793,13 +793,15 @@ function hydrateEditors() {
     if (!status) return;
 
     const timeoutId = window.setTimeout(() => {
-      status.textContent = "Si l’éditeur reste vide, il faut d’abord lancer le serveur Scratch local.";
+      status.textContent = SERVER_STORAGE_ENABLED
+        ? "Si l\u2019\u00e9diteur reste vide, v\u00e9rifie que le serveur Scratch local est lanc\u00e9."
+        : "L\u2019\u00e9diteur Scratch met un peu de temps \u00e0 charger. Si la zone reste vide, actualise la page.";
       status.classList.add("warning");
-    }, 7000);
+    }, 15000);
 
     frame.addEventListener("load", () => {
       window.clearTimeout(timeoutId);
-      status.textContent = "Éditeur Scratch local chargé.";
+      status.textContent = "\u00c9diteur Scratch charg\u00e9.";
       status.classList.remove("warning");
       status.classList.add("ready");
     });
