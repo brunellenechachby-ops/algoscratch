@@ -68,6 +68,7 @@ const els = {
 };
 
 const pendingScratchRequests = new Map();
+const autoLoadedScratchProjects = new Set();
 let serverSaveTimer = null;
 let supabaseSaveTimer = null;
 let activityVisitRecorded = false;
@@ -836,6 +837,7 @@ function hydrateScratchModeControls() {
 
     button.addEventListener("click", () => {
       mode = mode === "simple" ? "full" : "simple";
+      autoLoadedScratchProjects.delete(activityId);
       editor.src = getScratchEditorUrl(activityId, mode);
       label.textContent = mode === "simple"
         ? "Mode guidé : blocs utiles uniquement"
@@ -898,6 +900,10 @@ function handleScratchBridgeMessage(event) {
     els.projectSavePanels.forEach((panel) => {
       hydrateProjectSavePanel(panel.dataset.activityId);
     });
+    const readyEditor = els.scratchEditors.find((editor) => editor.contentWindow === event.source);
+    if (readyEditor?.dataset.activityId) {
+      autoLoadScratchProject(readyEditor.dataset.activityId);
+    }
     return;
   }
 
@@ -911,6 +917,22 @@ function handleScratchBridgeMessage(event) {
     request.reject(new Error(message.error || "Action Scratch impossible."));
   } else {
     request.resolve(message);
+  }
+}
+
+async function autoLoadScratchProject(activityId) {
+  if (!state.currentUser || autoLoadedScratchProjects.has(activityId)) return;
+
+  const savedProject = getUserProgress().scratchProjects?.[activityId];
+  if (!savedProject?.projectBase64) return;
+
+  autoLoadedScratchProjects.add(activityId);
+  try {
+    setProjectSaveStatus(activityId, "Projet sauvegard\u00e9 trouv\u00e9 : rechargement automatique\u2026");
+    await loadScratchProject(activityId, {automatic: true});
+  } catch (error) {
+    autoLoadedScratchProjects.delete(activityId);
+    console.warn("Rechargement automatique Scratch impossible :", error);
   }
 }
 
@@ -937,7 +959,7 @@ async function saveScratchProject(activityId) {
   }
 }
 
-async function loadScratchProject(activityId) {
+async function loadScratchProject(activityId, options = {}) {
   if (!state.currentUser) {
     promptLogin();
     return;
@@ -953,7 +975,7 @@ async function loadScratchProject(activityId) {
     setProjectSaveStatus(activityId, "Chargement du projet sauvegardé…");
     const projectData = base64ToArrayBuffer(savedProject.projectBase64);
     await createScratchRequest("algoscratch:scratch:import-project", activityId, {projectData});
-    setProjectSaveStatus(activityId, "Projet Scratch rechargé.", "success");
+    setProjectSaveStatus(activityId, options.automatic ? "Projet Scratch restaur\u00e9 automatiquement." : "Projet Scratch recharg\u00e9.", "success");
   } catch (error) {
     setProjectSaveStatus(activityId, `Impossible de recharger : ${error.message}`, "error");
   }
@@ -1038,6 +1060,7 @@ async function boot() {
   }
   hydrateSession();
   hydrateProjectSavePanels();
+  els.scratchEditors.forEach((editor) => autoLoadScratchProject(editor.dataset.activityId));
 }
 
 boot();
