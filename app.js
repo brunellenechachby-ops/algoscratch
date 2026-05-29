@@ -830,7 +830,7 @@ function hydrateScratchModeControls() {
       </div>
       <button class="secondary-button compact" type="button" data-scratch-mode-toggle>Mode complet</button>
     `;
-    wrapper.before(controls);
+    wrapper.after(controls);
 
     const label = controls.querySelector("[data-scratch-mode-label]");
     const button = controls.querySelector("[data-scratch-mode-toggle]");
