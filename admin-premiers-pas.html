@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>AlgoScratch — Administration — Premiers pas</title>
-  <link rel="stylesheet" href="styles.css?v=20260529-2">
+  <title>AlgoScratch — Administration — Chapitre 1</title>
+  <link rel="stylesheet" href="styles.css?v=20260529-4">
 </head>
 <body class="admin-body">
   <header class="site-header admin-header">
@@ -39,17 +39,17 @@
       </aside>
       <div class="admin-workspace">
         <nav class="lesson-topbar" aria-label="Navigation administration">
-          <ol class="breadcrumbs"><li>Activit&eacute;s Scratch</li><li>Premiers pas</li><li>Suivi</li></ol>
+          <ol class="breadcrumbs"><li>Activit&eacute;s Scratch</li><li>Chapitre 1</li><li>Suivi</li></ol>
           <button class="admin-refresh" id="refresh-admin" type="button">Actualiser</button>
         </nav>
         <section class="admin-page-header compact">
           <p class="eyebrow">Partie I — Suivi enseignant</p>
-          <h1>Premiers pas</h1>
-          <p>Activit&eacute;s 1 &agrave; 6 regroup&eacute;es dans une seule vue de synth&egrave;se.</p>
+          <h1>Chapitre 1</h1>
+          <p>Activit&eacute;s et bilans regroup&eacute;s dans une seule vue de synth&egrave;se.</p>
         </section>
         <section class="admin-warning" role="note">
           <strong>Validation p&eacute;dagogique</strong>
-          <p>Les ouvertures, sauvegardes Scratch et QCM sont d&eacute;tect&eacute;s automatiquement. La validation finale reste une d&eacute;cision de l&rsquo;enseignant.</p>
+          <p>Les ouvertures et sauvegardes Scratch sont suivies dans les activit&eacute;s. Les r&eacute;ussites aux QCM sont regroup&eacute;es dans les colonnes bilan. La validation finale reste une d&eacute;cision de l&rsquo;enseignant.</p>
         </section>
         <section class="admin-summary" aria-labelledby="summary-title">
           <div class="admin-summary-head">
@@ -68,7 +68,7 @@
           <div class="admin-table-scroll">
             <table class="progress-table">
               <thead>
-                <tr><th>&Eacute;l&egrave;ve</th><th>Derni&egrave;re activit&eacute;</th><th>Activit&eacute; 1</th><th>Activit&eacute; 2</th><th>Activit&eacute; 3</th><th>Activit&eacute; 4</th><th>Activit&eacute; 5</th><th>Activit&eacute; 6</th><th>Compte</th></tr>
+                <tr><th>&Eacute;l&egrave;ve</th><th>Derni&egrave;re activit&eacute;</th><th>Activit&eacute; 1</th><th>Activit&eacute; 2</th><th>Activit&eacute; 3</th><th class="bilan-column">Bilan Premiers pas</th><th>Activit&eacute; 4</th><th>Activit&eacute; 5</th><th>Activit&eacute; 6</th><th class="bilan-column">Bilan R&eacute;p&eacute;ter</th><th>Compte</th></tr>
               </thead>
               <tbody id="progress-table-body"></tbody>
             </table>
@@ -80,6 +80,6 @@
   </main>
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase-config.js"></script>
-  <script src="admin.js?v=20260529-2"></script>
+  <script src="admin.js?v=20260529-4"></script>
 </body>
 </html>

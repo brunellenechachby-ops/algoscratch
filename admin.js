@@ -9,6 +9,22 @@ const adminActivities = {
   "activite-6": "Activit\u00e9 6",
 };
 
+const adminBilans = {
+  "bilan-premiers-pas": {
+    label: "Bilan Premiers pas",
+    quizIds: ["activite-1", "activite-2", "activite-3"],
+  },
+  "bilan-repeter": {
+    label: "Bilan R\u00e9p\u00e9ter",
+    quizIds: ["activite-4"],
+  },
+};
+
+const adminActivityGroups = [
+  {activities: ["activite-1", "activite-2", "activite-3"], bilan: "bilan-premiers-pas"},
+  {activities: ["activite-4", "activite-5", "activite-6"], bilan: "bilan-repeter"},
+];
+
 const adminEls = {
   layout: document.querySelector(".admin-layout"),
   sidebarToggle: document.querySelector("#admin-sidebar-toggle"),
@@ -146,7 +162,6 @@ function hasStarted(progress, activityId) {
     progress.activityVisits[activityId] ||
     progress.lastActivity === activityId ||
     progress.scratchProjects[activityId] ||
-    progress.quizzes[activityId] ||
     progress.validations[activityId]?.validated
   );
 }
@@ -198,7 +213,6 @@ function createActivityCell(username, progress, activityId) {
         title: `Voir le projet Scratch sauvegard\u00e9 de ${username} — ${adminActivities[activityId]}`,
       });
     }
-    if (progress.quizzes[activityId]) appendChip(statuses, "QCM r\u00e9ussi", "quiz");
     if (validated) appendChip(statuses, "Valid\u00e9e", "validated");
   }
 
@@ -213,6 +227,26 @@ function createActivityCell(username, progress, activityId) {
   return cell;
 }
 
+function createBilanCell(progress, bilanId) {
+  const cell = document.createElement("td");
+  const statuses = document.createElement("div");
+  statuses.className = "cell-statuses";
+  const bilan = adminBilans[bilanId];
+  const total = bilan.quizIds.length;
+  const passed = bilan.quizIds.filter((quizId) => progress.quizzes[quizId]).length;
+
+  if (!passed) {
+    appendChip(statuses, "QCM \u00e0 faire", "empty");
+  } else if (passed === total && total === 1) {
+    appendChip(statuses, "QCM r\u00e9ussi", "quiz");
+  } else {
+    const plural = passed > 1 ? "s" : "";
+    appendChip(statuses, `${passed}/${total} QCM r\u00e9ussi${plural}`, "quiz");
+  }
+
+  cell.append(statuses);
+  return cell;
+}
 function renderProgressTable() {
   if (!adminEls.tableBody) return;
   adminEls.tableBody.innerHTML = "";
@@ -229,7 +263,10 @@ function renderProgressTable() {
     latest.className = "latest-activity";
     latest.textContent = latestActivityLabel(progress);
     row.append(student, latest);
-    Object.keys(adminActivities).forEach((activityId) => row.append(createActivityCell(username, progress, activityId)));
+    adminActivityGroups.forEach((group) => {
+      group.activities.forEach((activityId) => row.append(createActivityCell(username, progress, activityId)));
+      row.append(createBilanCell(progress, group.bilan));
+    });
 
     const account = document.createElement("td");
     const reset = document.createElement("button");

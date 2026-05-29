@@ -1,4 +1,4 @@
-:root {
+﻿:root {
   --ink: #172033;
   --muted: #5f6b85;
   --paper: #f7f8fc;
@@ -349,7 +349,7 @@ span {
 }
 
 .sidebar-toggle::before {
-  content: "‹";
+  content: "â€¹";
   margin-right: 8px;
   font-size: 1.15rem;
 }
@@ -424,7 +424,7 @@ span {
 }
 
 .tree-section-title::before {
-  content: "↳ ";
+  content: "â†³ ";
   color: var(--muted);
   font-weight: 800;
 }
@@ -439,7 +439,7 @@ span {
 }
 
 .tree-group a.tree-subitem::before {
-  content: "•";
+  content: "â€¢";
   position: absolute;
   left: 5px;
   color: var(--muted);
@@ -480,7 +480,7 @@ span {
 }
 
 .learning-layout.sidebar-collapsed .sidebar-toggle::before {
-  content: "›";
+  content: "â€º";
   margin-right: 0;
 }
 
@@ -519,7 +519,7 @@ span {
 }
 
 .breadcrumbs li:not(:last-child)::after {
-  content: "›";
+  content: "â€º";
   margin-left: 8px;
 }
 
@@ -1827,7 +1827,7 @@ footer {
 
 .progress-table {
   width: 100%;
-  min-width: 1320px;
+  min-width: 1560px;
   border-collapse: collapse;
   background: #fff;
 }
@@ -2036,3 +2036,9 @@ footer {
 .compact-steps ul {
   margin: 0;
 }
+
+.progress-table .bilan-column {
+  background: #eef5ff;
+  color: #0f52ba;
+}
+
