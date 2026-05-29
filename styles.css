@@ -751,6 +751,11 @@ span {
   color: #fff !important;
 }
 
+.block-chip.looks {
+  background: #9966ff !important;
+  color: #fff !important;
+}
+
 .scratch-lab h4 {
   margin-bottom: 14px;
 }

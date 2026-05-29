@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>AlgoScratch — Accueil</title>
   <meta name="description" content="Plateforme d'apprentissage de l'algorithmique avec Scratch.">
-  <link rel="stylesheet" href="styles.css?v=20260529-6">
+  <link rel="stylesheet" href="styles.css?v=20260529-7">
 </head>
 <body>
   <header class="site-header">
@@ -23,33 +23,36 @@
   <main class="page-main">
     <section class="learning-layout home-layout">
       <aside class="course-sidebar" aria-label="Arborescence du cours">
-        <button class="sidebar-toggle" id="sidebar-toggle" type="button" aria-expanded="true">
-          <span>Masquer</span>
-        </button>
-
+        <button class="sidebar-toggle" id="sidebar-toggle" type="button" aria-expanded="true"><span>Masquer</span></button>
         <nav class="course-tree">
           <h2>Parcours</h2>
           <ol>
-            <li class="tree-home">
-              <a class="active" href="index.html">Accueil</a>
-            </li>
+            <li class="tree-home"><a href="index.html">Accueil</a></li>
             <li class="tree-group tree-notebook active">
               <span>I</span>
               <div>
                 <strong>Activit&eacute;s Scratch</strong>
-                <button class="tree-section-toggle" type="button" data-tree-toggle="premiers-pas" aria-expanded="true" aria-controls="premiers-pas-items">Premiers pas</button>
-                <div class="tree-subitems" id="premiers-pas-items">
+                <button class="tree-section-toggle" type="button" data-tree-toggle="premiers-pas" aria-expanded="false" aria-controls="premiers-pas-items">Premiers pas</button>
+                <div class="tree-subitems" id="premiers-pas-items" hidden>
                   <a class="tree-subitem" href="activite-1.html" data-activity-id="activite-1">Activit&eacute; 1</a>
                   <a class="tree-subitem" href="activite-2.html" data-activity-id="activite-2">Activit&eacute; 2</a>
                   <a class="tree-subitem" href="activite-3.html" data-activity-id="activite-3">Activit&eacute; 3</a>
                   <a class="tree-subitem" href="bilan-premiers-pas.html">Bilan</a>
                 </div>
-                <button class="tree-section-toggle" type="button" data-tree-toggle="repeter" aria-expanded="true" aria-controls="repeter-items">R&eacute;p&eacute;ter</button>
-                <div class="tree-subitems" id="repeter-items">
+                <button class="tree-section-toggle" type="button" data-tree-toggle="repeter" aria-expanded="false" aria-controls="repeter-items">R&eacute;p&eacute;ter</button>
+                <div class="tree-subitems" id="repeter-items" hidden>
                   <a class="tree-subitem" href="activite-4.html" data-activity-id="activite-4">Activit&eacute; 4</a>
                   <a class="tree-subitem" href="activite-5.html" data-activity-id="activite-5">Activit&eacute; 5</a>
                   <a class="tree-subitem" href="activite-6.html" data-activity-id="activite-6">Activit&eacute; 6</a>
                   <a class="tree-subitem" href="bilan-repeter.html">Bilan</a>
+                </div>
+                <button class="tree-section-toggle" type="button" data-tree-toggle="coordonnees" aria-expanded="false" aria-controls="coordonnees-items">Coordonn&eacute;es (x ; y)</button>
+                <div class="tree-subitems" id="coordonnees-items" hidden>
+                  <a class="tree-subitem" href="activite-7.html" data-activity-id="activite-7">Activit&eacute; 7</a>
+                  <a class="tree-subitem" href="activite-8.html" data-activity-id="activite-8">Activit&eacute; 8</a>
+                  <a class="tree-subitem" href="activite-9.html" data-activity-id="activite-9">Activit&eacute; 9</a>
+                  <a class="tree-subitem" href="activite-10.html" data-activity-id="activite-10">Activit&eacute; 10</a>
+                  <a class="tree-subitem" href="bilan-coordonnees.html">Bilan</a>
                 </div>
               </div>
             </li>
@@ -132,7 +135,7 @@
             </p>
           </div>
           <a class="primary-link" id="continuation-link" href="activite-1.html">Ouvrir l’activité 1</a>
-        </section>
+          </section>
       </div>
     </section>
   </main>
@@ -146,6 +149,6 @@
 
   <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <script src="supabase-config.js"></script>
-  <script src="app.js?v=20260529-3"></script>
+  <script src="app.js?v=20260529-4"></script>
 </body>
 </html>

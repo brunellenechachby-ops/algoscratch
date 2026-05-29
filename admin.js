@@ -7,6 +7,10 @@ const adminActivities = {
   "activite-4": "Activit\u00e9 4",
   "activite-5": "Activit\u00e9 5",
   "activite-6": "Activit\u00e9 6",
+  "activite-7": "Activit\u00e9 7",
+  "activite-8": "Activit\u00e9 8",
+  "activite-9": "Activit\u00e9 9",
+  "activite-10": "Activit\u00e9 10",
 };
 
 const adminBilans = {
@@ -18,6 +22,10 @@ const adminBilans = {
     label: "Bilan R\u00e9p\u00e9ter",
     quizIds: ["activite-4"],
   },
+  "bilan-coordonnees": {
+    label: "Bilan Coordonn\u00e9es",
+    quizIds: ["activite-7"],
+  },
 };
 
 const adminPageSequences = {
@@ -26,6 +34,9 @@ const adminPageSequences = {
   ],
   repeter: [
     {activities: ["activite-4", "activite-5", "activite-6"], bilan: "bilan-repeter"},
+  ],
+  coordonnees: [
+    {activities: ["activite-7", "activite-8", "activite-9", "activite-10"], bilan: "bilan-coordonnees"},
   ],
 };
 

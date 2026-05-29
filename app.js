@@ -35,6 +35,10 @@ const activityDestinations = {
   "activite-4": {href: "activite-4.html", number: "4"},
   "activite-5": {href: "activite-5.html", number: "5"},
   "activite-6": {href: "activite-6.html", number: "6"},
+  "activite-7": {href: "activite-7.html", number: "7"},
+  "activite-8": {href: "activite-8.html", number: "8"},
+  "activite-9": {href: "activite-9.html", number: "9"},
+  "activite-10": {href: "activite-10.html", number: "10"},
 };
 
 const defaultState = {
@@ -730,7 +734,7 @@ function inferLastActivity(progress) {
     return savedProjects[0][0];
   }
 
-  if (progress.lessonCompleted) return "activite-6";
+  if (progress.lessonCompleted) return "activite-10";
   if (progress.quizzes?.["activite-3"]) return "activite-3";
   if (progress.quizzes?.["activite-2"]) return "activite-2";
   return "activite-1";
