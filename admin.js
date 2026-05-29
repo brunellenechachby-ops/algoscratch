@@ -1,4 +1,4 @@
-﻿const ADMIN_STATE_ENDPOINT = "/api/state";
+const ADMIN_STATE_ENDPOINT = "/api/state";
 const ADMIN_SIDEBAR_KEY = "algoscratch-admin-sidebar-collapsed";
 const adminActivities = {
   "activite-1": "Activit\u00e9 1",
@@ -163,10 +163,17 @@ function formatDate(isoDate) {
   }).format(new Date(isoDate));
 }
 
-function appendChip(container, label, kind) {
-  const chip = document.createElement("span");
-  chip.className = `status-chip ${kind}`;
+function appendChip(container, label, kind, options = {}) {
+  const chip = document.createElement(options.action ? "button" : "span");
+  chip.className = `status-chip ${kind}${options.action ? " status-chip-button" : ""}`;
   chip.textContent = label;
+  if (options.action) {
+    chip.type = "button";
+    chip.dataset.action = options.action;
+    chip.dataset.username = options.username;
+    chip.dataset.activityId = options.activityId;
+    chip.title = options.title || label;
+  }
   container.append(chip);
 }
 
@@ -180,7 +187,14 @@ function createActivityCell(username, progress, activityId) {
     appendChip(statuses, "Non commenc\u00e9e", "empty");
   } else {
     appendChip(statuses, "Commenc\u00e9e", "started");
-    if (progress.scratchProjects[activityId]) appendChip(statuses, "Projet sauvegard\u00e9", "project");
+    if (progress.scratchProjects[activityId]) {
+      appendChip(statuses, "Voir projet sauvegard\u00e9", "project", {
+        action: "view-project",
+        username,
+        activityId,
+        title: `Voir le projet Scratch sauvegard\u00e9 de ${username} — ${adminActivities[activityId]}`,
+      });
+    }
     if (progress.quizzes[activityId]) appendChip(statuses, "QCM r\u00e9ussi", "quiz");
     if (validated) appendChip(statuses, "Valid\u00e9e", "validated");
   }
@@ -228,6 +242,16 @@ function renderProgressTable() {
     row.append(account);
     adminEls.tableBody.append(row);
   });
+}
+
+function openSavedProject(username, activityId, project) {
+  const params = new URLSearchParams({username, activity: activityId});
+  try {
+    sessionStorage.setItem("algoscratch-admin-project-preview", JSON.stringify({username, activityId, project}));
+  } catch (error) {
+    console.warn("Projet trop volumineux pour le cache de pr\u00e9visualisation local :", error);
+  }
+  window.location.href = `admin-projet.html?${params.toString()}`;
 }
 
 async function persistAdminState() {
@@ -309,6 +333,15 @@ async function handleAdminAction(event) {
   if (!button) return;
   const username = button.dataset.username;
   const progress = normalizeProgress(adminState.users[username]);
+
+  if (button.dataset.action === "view-project") {
+    const activityId = button.dataset.activityId;
+    const project = progress.scratchProjects[activityId];
+    if (!project) return;
+    openSavedProject(username, activityId, project);
+    return;
+  }
+
   let handledBySupabase = false;
 
   try {

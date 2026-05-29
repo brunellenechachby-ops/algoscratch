@@ -1941,3 +1941,22 @@ footer {
   padding: 0 0.75rem;
   white-space: nowrap;
 }
+
+.status-chip-button {
+  border: 0;
+  cursor: pointer;
+  font-family: inherit;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.status-chip-button:hover,
+.status-chip-button:focus-visible {
+  filter: brightness(0.96);
+  outline: 2px solid rgba(146, 64, 14, 0.28);
+  outline-offset: 2px;
+}
+
+.admin-project-frame-wrap {
+  margin-top: 1rem;
+}

@@ -1,0 +1,65 @@
+﻿<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AlgoScratch &mdash; Projet Scratch sauvegard&eacute;</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body class="admin-body">
+  <header class="site-header admin-header">
+    <a class="brand" href="admin.html" aria-label="AlgoScratch administration">
+      <span class="brand-mark">AS</span>
+      <span>AlgoScratch</span>
+    </a>
+    <span class="admin-tag">Administration</span>
+    <div class="session-actions">
+      <a class="admin-back-link" href="admin-premiers-pas.html">Retour au suivi</a>
+      <button class="admin-back-link" id="admin-project-logout" type="button">D&eacute;connexion</button>
+    </div>
+  </header>
+  <main class="page-main">
+    <section class="learning-layout admin-layout">
+      <aside class="course-sidebar" aria-label="Arborescence administration">
+        <button class="sidebar-toggle" id="admin-sidebar-toggle" type="button" aria-expanded="true"><span>Masquer</span></button>
+        <nav class="course-tree admin-tree">
+          <h2>Parcours</h2>
+          <ol>
+            <li class="tree-home"><a href="admin.html">Accueil</a></li>
+            <li class="tree-group tree-notebook active">
+              <span>I</span><div>
+                <strong>Activit&eacute;s Scratch</strong>
+                <a class="admin-sequence-link active" href="admin-premiers-pas.html">Premiers pas</a>
+              </div>
+            </li>
+            <li class="tree-group tree-notebook"><span>II</span><div><strong>&Eacute;nigmes Scratch</strong></div></li>
+            <li class="tree-group tree-interactive"><span>III</span><div><strong>Activit&eacute;s sur feuilles</strong></div></li>
+            <li class="tree-group tree-interactive"><span>IV</span><div><strong>&Eacute;nigmes sur feuilles</strong></div></li>
+          </ol>
+        </nav>
+      </aside>
+      <div class="admin-workspace">
+        <nav class="lesson-topbar" aria-label="Navigation administration">
+          <ol class="breadcrumbs"><li>Activit&eacute;s Scratch</li><li>Premiers pas</li><li>Projet sauvegard&eacute;</li></ol>
+        </nav>
+        <section class="admin-page-header compact">
+          <p class="eyebrow">Consultation enseignant</p>
+          <h1 id="admin-project-title">Projet Scratch sauvegard&eacute;</h1>
+          <p id="admin-project-subtitle">Chargement du projet&hellip;</p>
+        </section>
+        <section class="admin-warning" role="note">
+          <strong>Consultation</strong>
+          <p>Le projet est charg&eacute; dans l&rsquo;&eacute;diteur Scratch pour permettre de regarder les blocs et de tester le programme.</p>
+        </section>
+        <p class="admin-load-status" id="admin-project-status" role="status">Initialisation de l&rsquo;&eacute;diteur Scratch&hellip;</p>
+        <div class="editor-frame-wrap admin-project-frame-wrap">
+          <iframe class="editor-frame" id="admin-project-frame" title="Projet Scratch sauvegard&eacute;"></iframe>
+        </div>
+      </div>
+    </section>
+  </main>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="admin-project.js"></script>
+</body>
+</html>
