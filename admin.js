@@ -245,7 +245,7 @@ function renderProgressTable() {
 }
 
 function openSavedProject(username, activityId, project) {
-  const params = new URLSearchParams({username, activity: activityId});
+  const params = new URLSearchParams({username, activity: activityId, v: Date.now().toString()});
   try {
     sessionStorage.setItem("algoscratch-admin-project-preview", JSON.stringify({username, activityId, project}));
   } catch (error) {

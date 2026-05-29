@@ -1984,3 +1984,19 @@ footer {
     flex-direction: column;
   }
 }
+
+.admin-project-actions {
+  padding: 1rem;
+  background: #f8fafc;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+}
+
+.admin-project-validate {
+  min-width: 210px;
+  background: var(--green);
+}
+
+.admin-project-validate:hover:not(:disabled) {
+  background: #1f7a45;
+}
