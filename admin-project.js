@@ -15,6 +15,7 @@ const adminProjectEls = {
   layout: document.querySelector(".admin-layout"),
   sidebarToggle: document.querySelector("#admin-sidebar-toggle"),
   logout: document.querySelector("#admin-project-logout"),
+  validate: document.querySelector("#admin-project-validate"),
   title: document.querySelector("#admin-project-title"),
   subtitle: document.querySelector("#admin-project-subtitle"),
   status: document.querySelector("#admin-project-status"),
@@ -30,6 +31,7 @@ const requestedUsername = params.get("username") || "";
 const requestedActivityId = params.get("activity") || "";
 let pendingImport = null;
 let savedProject = null;
+let reviewedStudentId = null;
 
 function isLocalPreview() {
   return ["localhost", "127.0.0.1", ""].includes(window.location.hostname);
@@ -92,6 +94,7 @@ async function loadProjectFromSupabase() {
   await ensureAdminSession();
   const {data: profile, error: profileError} = await adminProjectSupabase.from("profiles").select("id, username").eq("username", requestedUsername).single();
   if (profileError || !profile || !profile.id) throw new Error("\u00c9l\u00e8ve introuvable.");
+  reviewedStudentId = profile.id;
   const {data: projectRow, error: projectError} = await adminProjectSupabase.from("scratch_projects").select("project_data, saved_at").eq("user_id", profile.id).eq("activity_id", requestedActivityId).single();
   if (projectError || !projectRow || !projectRow.project_data) throw new Error("Aucun projet sauvegard\u00e9 pour cette activit\u00e9.");
   return {...(projectRow.project_data || {}), savedAt: projectRow.saved_at || (projectRow.project_data && projectRow.project_data.savedAt)};
@@ -131,6 +134,38 @@ function handleScratchMessage(event) {
     return;
   }
   setProjectStatus("Projet Scratch charg\u00e9. Tu peux regarder les blocs et lancer le programme.", "success");
+  if (adminProjectEls.validate) adminProjectEls.validate.disabled = false;
+}
+
+async function validateReviewedActivity() {
+  if (!adminProjectSupabase || !reviewedStudentId) {
+    setProjectStatus("Validation impossible : donn\u00e9es enseignant incompl\u00e8tes.", "error");
+    return;
+  }
+
+  if (adminProjectEls.validate) adminProjectEls.validate.disabled = true;
+  setProjectStatus("Validation de l\u2019activit\u00e9 en cours\u2026");
+
+  try {
+    await ensureAdminSession();
+    const now = new Date().toISOString();
+    const {error} = await adminProjectSupabase
+      .from("activity_progress")
+      .upsert({
+        user_id: reviewedStudentId,
+        activity_id: requestedActivityId,
+        teacher_validated: true,
+        teacher_validated_at: now,
+        updated_at: now,
+      }, {onConflict: "user_id,activity_id"});
+
+    if (error) throw error;
+    setProjectStatus("Activit\u00e9 valid\u00e9e. Retour au suivi\u2026", "success");
+    window.setTimeout(() => { window.location.href = "admin-premiers-pas.html"; }, 500);
+  } catch (error) {
+    if (adminProjectEls.validate) adminProjectEls.validate.disabled = false;
+    setProjectStatus("Validation impossible : " + (error.message || "erreur inconnue"), "error");
+  }
 }
 
 async function logoutAdminProject() {
@@ -172,5 +207,6 @@ adminProjectEls.sidebarToggle?.addEventListener("click", () => {
   renderAdminProjectSidebar();
 });
 adminProjectEls.logout?.addEventListener("click", logoutAdminProject);
+adminProjectEls.validate?.addEventListener("click", validateReviewedActivity);
 window.addEventListener("message", handleScratchMessage);
 bootAdminProject();

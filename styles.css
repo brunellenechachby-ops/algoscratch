@@ -1960,3 +1960,27 @@ footer {
 .admin-project-frame-wrap {
   margin-top: 1rem;
 }
+
+.admin-project-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-top: 0.75rem;
+}
+
+.admin-project-actions .admin-load-status {
+  margin: 0;
+}
+
+.admin-project-validate:disabled {
+  cursor: not-allowed;
+  opacity: 0.55;
+}
+
+@media (max-width: 760px) {
+  .admin-project-actions {
+    align-items: stretch;
+    flex-direction: column;
+  }
+}
