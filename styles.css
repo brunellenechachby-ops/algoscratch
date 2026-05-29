@@ -439,14 +439,19 @@ span {
 }
 
 .tree-group a.tree-subitem::before {
-  content: "â€¢";
+  content: "";
   position: absolute;
   left: 5px;
-  color: var(--muted);
+  top: 50%;
+  width: 4px;
+  height: 4px;
+  border-radius: 999px;
+  background: var(--muted);
+  transform: translateY(-50%);
 }
 
 .tree-group a.tree-subitem.active::before {
-  color: var(--violet);
+  background: var(--violet);
 }
 
 .tree-group a {
