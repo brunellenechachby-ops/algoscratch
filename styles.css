@@ -716,6 +716,13 @@ span {
   font-weight: 800;
 }
 
+.blocks-note {
+  margin: 0;
+  color: var(--muted);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+
 .block-chip {
   width: fit-content;
   padding: 10px 14px;
