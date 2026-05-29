@@ -20,10 +20,19 @@ const adminBilans = {
   },
 };
 
-const adminActivityGroups = [
-  {activities: ["activite-1", "activite-2", "activite-3"], bilan: "bilan-premiers-pas"},
-  {activities: ["activite-4", "activite-5", "activite-6"], bilan: "bilan-repeter"},
-];
+const adminPageSequences = {
+  "premiers-pas": [
+    {activities: ["activite-1", "activite-2", "activite-3"], bilan: "bilan-premiers-pas"},
+  ],
+  repeter: [
+    {activities: ["activite-4", "activite-5", "activite-6"], bilan: "bilan-repeter"},
+  ],
+};
+
+function currentAdminGroups() {
+  const sequence = document.body?.dataset.adminSequence || "premiers-pas";
+  return adminPageSequences[sequence] || adminPageSequences["premiers-pas"];
+}
 
 const adminEls = {
   layout: document.querySelector(".admin-layout"),
@@ -263,7 +272,7 @@ function renderProgressTable() {
     latest.className = "latest-activity";
     latest.textContent = latestActivityLabel(progress);
     row.append(student, latest);
-    adminActivityGroups.forEach((group) => {
+    currentAdminGroups().forEach((group) => {
       group.activities.forEach((activityId) => row.append(createActivityCell(username, progress, activityId)));
       row.append(createBilanCell(progress, group.bilan));
     });
