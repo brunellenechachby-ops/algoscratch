@@ -732,15 +732,18 @@ span {
 }
 
 .block-chip.motion {
-  background: var(--blue);
+  background: var(--blue) !important;
+  color: #fff !important;
 }
 
 .block-chip.control {
-  background: #ffab19;
+  background: #ffab19 !important;
+  color: #172033 !important;
 }
 
 .block-chip.pen {
-  background: var(--green);
+  background: var(--green) !important;
+  color: #fff !important;
 }
 
 .scratch-lab h4 {
@@ -1564,14 +1567,14 @@ footer {
   align-items: center;
   gap: 4px;
   width: 100%;
-  margin-top: 2px;
-  padding: 4px 4px 4px 0;
-  color: #545454;
+  margin-top: 8px;
+  padding: 6px 4px 6px 0;
+  color: var(--blue);
   background: transparent;
   border: 0;
   border-radius: 4px;
-  font-size: 0.9rem;
-  font-weight: 500;
+  font-size: 1rem;
+  font-weight: 800;
   text-align: left;
   cursor: pointer;
 }
@@ -1580,7 +1583,7 @@ footer {
   content: "\25BE";
   display: inline-block;
   width: 14px;
-  color: var(--muted);
+  color: var(--blue);
   text-align: center;
 }
 
@@ -1595,7 +1598,7 @@ footer {
 
 .tree-section-toggle.active-section {
   color: var(--blue);
-  font-weight: 700;
+  font-weight: 900;
 }
 
 .tree-subitems {
