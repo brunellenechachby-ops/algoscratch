@@ -40,7 +40,7 @@ const activityDestinations = {
 const defaultState = {
   currentUser: "",
   sidebarCollapsed: false,
-  firstStepsExpanded: true,
+  treeSections: {"premiers-pas": true, repeter: true},
   users: {},
 };
 
@@ -61,8 +61,8 @@ const els = {
   completeLesson: document.querySelector("#complete-lesson"),
   resetBlocks: document.querySelector("#reset-blocks"),
   sidebarToggle: document.querySelector("#sidebar-toggle"),
-  treeSectionToggle: document.querySelector('[data-tree-toggle="premiers-pas"]'),
-  treeSectionItems: document.querySelector("#premiers-pas-items"),
+  treeSectionToggles: [...document.querySelectorAll("[data-tree-toggle]")],
+  treeSectionItems: [...document.querySelectorAll(".tree-subitems")],
   learningLayout: document.querySelector(".learning-layout"),
   editorFrames: [...document.querySelectorAll(".editor-frame")],
   editorStatuses: [...document.querySelectorAll("[data-editor-status]")],
@@ -510,30 +510,36 @@ function toggleSidebar() {
   renderSidebar();
 }
 
-function toggleFirstSteps() {
-  state.firstStepsExpanded = state.firstStepsExpanded === false;
+function toggleTreeSection(event) {
+  const sectionId = event.currentTarget.dataset.treeToggle;
+  if (!sectionId) return;
+
+  state.treeSections ||= {"premiers-pas": true, repeter: true};
+  state.treeSections[sectionId] = state.treeSections[sectionId] === false;
   saveState({ syncServer: false });
   renderSidebar();
 }
 
 function renderSidebarValidationChecks(progress = getUserProgress()) {
-  if (!els.treeSectionItems) return;
+  if (!els.treeSectionItems.length) return;
 
-  els.treeSectionItems.querySelectorAll(".tree-subitem[data-activity-id]").forEach((link) => {
-    link.querySelector(".validation-check")?.remove();
+  els.treeSectionItems.forEach((section) => {
+    section.querySelectorAll(".tree-subitem[data-activity-id]").forEach((link) => {
+      link.querySelector(".validation-check")?.remove();
 
-    const activityId = link.dataset.activityId;
-    const isValidated = Boolean(progress.validations?.[activityId]?.validated);
-    link.classList.toggle("is-validated", isValidated);
+      const activityId = link.dataset.activityId;
+      const isValidated = Boolean(progress.validations?.[activityId]?.validated);
+      link.classList.toggle("is-validated", isValidated);
 
-    if (isValidated) {
-      const check = document.createElement("span");
-      check.className = "validation-check";
-      check.textContent = "\u2713";
-      check.title = "Activit\u00e9 valid\u00e9e";
-      check.setAttribute("aria-label", "activit\u00e9 valid\u00e9e");
-      link.append(check);
-    }
+      if (isValidated) {
+        const check = document.createElement("span");
+        check.className = "validation-check";
+        check.textContent = "\u2713";
+        check.title = "Activit\u00e9 valid\u00e9e";
+        check.setAttribute("aria-label", "activit\u00e9 valid\u00e9e");
+        link.append(check);
+      }
+    });
   });
 }
 
@@ -544,10 +550,19 @@ function renderSidebar() {
   els.sidebarToggle.setAttribute("aria-expanded", String(!state.sidebarCollapsed));
   els.sidebarToggle.title = state.sidebarCollapsed ? "Afficher l’arborescence" : "Masquer l’arborescence";
 
-  if (els.treeSectionToggle && els.treeSectionItems) {
-    const expanded = state.firstStepsExpanded !== false;
-    els.treeSectionToggle.setAttribute("aria-expanded", String(expanded));
-    els.treeSectionItems.hidden = !expanded;
+  if (els.treeSectionToggles.length && els.treeSectionItems.length) {
+    state.treeSections ||= {"premiers-pas": true, repeter: true};
+
+    els.treeSectionToggles.forEach((toggle) => {
+      const sectionId = toggle.dataset.treeToggle;
+      const items = document.querySelector("#" + sectionId + "-items");
+      if (!sectionId || !items) return;
+
+      const expanded = state.treeSections[sectionId] !== false;
+      toggle.setAttribute("aria-expanded", String(expanded));
+      items.hidden = !expanded;
+    });
+
     renderSidebarValidationChecks();
   }
 }
@@ -1050,7 +1065,7 @@ els.quizOptionsList.forEach((quizOptions) => {
 els.completeLesson?.addEventListener("click", completeLesson);
 els.resetBlocks?.addEventListener("click", resetBlocks);
 els.sidebarToggle?.addEventListener("click", toggleSidebar);
-els.treeSectionToggle?.addEventListener("click", toggleFirstSteps);
+els.treeSectionToggles.forEach((toggle) => toggle.addEventListener("click", toggleTreeSection));
 els.projectSavePanels.forEach((panel) => {
   const activityId = panel.dataset.activityId;
   panel.querySelector("[data-project-save]")?.addEventListener("click", () => saveScratchProject(activityId));

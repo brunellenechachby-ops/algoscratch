@@ -735,6 +735,14 @@ span {
   background: var(--blue);
 }
 
+.block-chip.control {
+  background: #ffab19;
+}
+
+.block-chip.pen {
+  background: var(--green);
+}
+
 .scratch-lab h4 {
   margin-bottom: 14px;
 }
@@ -2016,4 +2024,12 @@ footer {
   font-weight: 800;
   text-transform: uppercase;
   letter-spacing: 0.04em;
+}
+
+.compact-steps article {
+  gap: 8px;
+}
+
+.compact-steps ul {
+  margin: 0;
 }

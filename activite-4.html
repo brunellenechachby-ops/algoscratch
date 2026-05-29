@@ -15,37 +15,48 @@
     <section class="learning-layout">
       <aside class="course-sidebar" aria-label="Arborescence du cours">
         <button class="sidebar-toggle" id="sidebar-toggle" type="button" aria-expanded="true"><span>Masquer</span></button>
-        <nav class="course-tree"><h2>Parcours</h2><ol>
-          <li class="tree-home"><a href="index.html">Accueil</a></li>
-          <li class="tree-group tree-notebook active"><span>I</span><div><strong>Activit&eacute;s Scratch</strong><button class="tree-section-toggle active-section" type="button" data-tree-toggle="premiers-pas" aria-expanded="true" aria-controls="premiers-pas-items">Chapitre 1</button><div class="tree-subitems" id="premiers-pas-items">
-                  <span class="tree-subsection">Premiers pas</span>
+        <nav class="course-tree">
+          <h2>Parcours</h2>
+          <ol>
+            <li class="tree-home">
+              <a href="index.html">Accueil</a>
+            </li>
+            <li class="tree-group tree-notebook active">
+              <span>I</span>
+              <div>
+                <strong>Activit&eacute;s Scratch</strong>
+                <button class="tree-section-toggle" type="button" data-tree-toggle="premiers-pas" aria-expanded="false" aria-controls="premiers-pas-items">Premiers pas</button>
+                <div class="tree-subitems" id="premiers-pas-items" hidden>
                   <a class="tree-subitem" href="activite-1.html" data-activity-id="activite-1">Activit&eacute; 1</a>
                   <a class="tree-subitem" href="activite-2.html" data-activity-id="activite-2">Activit&eacute; 2</a>
                   <a class="tree-subitem" href="activite-3.html" data-activity-id="activite-3">Activit&eacute; 3</a>
-                  <span class="tree-subsection">R&eacute;p&eacute;ter</span>
+                  <a class="tree-subitem" href="bilan-premiers-pas.html">Bilan</a>
+                </div>
+                <button class="tree-section-toggle active-section" type="button" data-tree-toggle="repeter" aria-expanded="true" aria-controls="repeter-items">R&eacute;p&eacute;ter</button>
+                <div class="tree-subitems" id="repeter-items">
                   <a class="tree-subitem active" href="activite-4.html" data-activity-id="activite-4">Activit&eacute; 4</a>
                   <a class="tree-subitem" href="activite-5.html" data-activity-id="activite-5">Activit&eacute; 5</a>
                   <a class="tree-subitem" href="activite-6.html" data-activity-id="activite-6">Activit&eacute; 6</a>
-                </div></div></li>
-          <li class="tree-group tree-notebook"><span>II</span><div><strong>&Eacute;nigmes Scratch</strong></div></li>
-          <li class="tree-group tree-interactive"><span>III</span><div><strong>Activit&eacute;s sur feuilles</strong></div></li>
-          <li class="tree-group tree-interactive"><span>IV</span><div><strong>&Eacute;nigmes sur feuilles</strong></div></li>
-        </ol></nav>
+                  <a class="tree-subitem" href="bilan-repeter.html">Bilan</a>
+                </div>
+              </div>
+            </li>
+            <li class="tree-group tree-notebook"><span>II</span><div><strong>&Eacute;nigmes Scratch</strong></div></li>
+            <li class="tree-group tree-interactive"><span>III</span><div><strong>Activit&eacute;s sur feuilles</strong></div></li>
+            <li class="tree-group tree-interactive"><span>IV</span><div><strong>&Eacute;nigmes sur feuilles</strong></div></li>
+          </ol>
+        </nav>
       </aside>
       <div class="lesson-workspace">
         <nav class="lesson-topbar" aria-label="Navigation de la le&ccedil;on">
           <ol class="breadcrumbs"><li>Activit&eacute;s Scratch</li><li>Répéter</li><li>Activit&eacute; 4</li></ol>
-          <div class="activity-stepper" aria-label="Activit&eacute;s du chapitre 1"><a href="activite-1.html">1</a>
-            <span></span>
-            <a href="activite-2.html">2</a>
-            <span></span>
-            <a href="activite-3.html">3</a>
-            <span></span>
-            <a class="active" aria-current="step" href="activite-4.html">4</a>
+          <div class="activity-stepper" aria-label="Navigation de la sous-partie"><a class="active" aria-current="step" href="activite-4.html">4</a>
             <span></span>
             <a href="activite-5.html">5</a>
             <span></span>
-            <a href="activite-6.html">6</a></div>
+            <a href="activite-6.html">6</a>
+            <span></span>
+            <a href="bilan-repeter.html">Bilan</a></div>
         </nav>
         <article class="notebook-page">
           <header class="lesson-header"><div><p class="eyebrow">Partie I &middot; Le&ccedil;on 2</p><h2>Répéter</h2></div><span class="lesson-badge">Notebook Scratch</span></header>
@@ -60,12 +71,6 @@
             <div class="editor-frame-wrap lesson-editor"><iframe class="editor-frame" data-scratch-editor data-activity-id="activite-4" title="&Eacute;diteur Scratch de l'activit&eacute; 4" src="http://localhost:8601/" loading="lazy" allow="autoplay; microphone; camera"></iframe></div>
             <p class="editor-status" data-editor-status role="status">Chargement de l&rsquo;&eacute;diteur Scratch&hellip;</p>
           </section>
-          <section class="cell cell-highlight"><p class="cell-label">&Agrave; retenir</p><div class="concept-grid"><article><strong>Boucle</strong><span>Une boucle permet de répéter plusieurs fois les mêmes blocs.</span></article>
-              <article><strong>Gain</strong><span>On évite de recopier les instructions de chaque marche.</span></article>
-              <article><strong>Corps de boucle</strong><span>Les blocs placés à l’intérieur sont ceux qui seront répétés.</span></article></div></section>
-          <section class="cell cell-highlight cell-check"><p class="cell-label">V&eacute;rification rapide</p><h3>Dans cette activité, pourquoi utilise-t-on le bloc répéter ?</h3><div class="quiz-options" data-quiz-options data-quiz-id="activite-4"><button type="button" data-answer="false">Pour changer automatiquement de costume</button>
-              <button type="button" data-answer="true">Pour refaire plusieurs fois les mêmes instructions</button>
-              <button type="button" data-answer="false">Pour arrêter le programme</button></div><p class="quiz-feedback" data-quiz-feedback data-quiz-id="activite-4">Choisis une r&eacute;ponse.</p></section>
           <section class="lesson-actions dual-actions"><a class="secondary-link" href="activite-3.html">Revenir &agrave; l&rsquo;activit&eacute; 3</a><a class="primary-link" href="activite-5.html">Passer &agrave; l&rsquo;activit&eacute; 5</a></section>
         </article>
       </div>
