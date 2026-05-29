@@ -571,7 +571,7 @@ function promptLogin() {
   els.username?.focus();
 
   if (els.sessionPill) {
-    els.sessionPill.textContent = "Connecte-toi depuis l’accueil pour sauvegarder";
+    els.sessionPill.textContent = "Connecte-toi pour sauvegarder";
   }
 }
 
@@ -685,8 +685,20 @@ async function login(event) {
   }
 }
 
+async function handleAuthButton() {
+  if (!state.currentUser) {
+    window.location.href = "index.html";
+    return;
+  }
+
+  await logout();
+}
+
 async function logout() {
-  if (!state.currentUser) return;
+  if (!state.currentUser) {
+    window.location.href = "index.html";
+    return;
+  }
 
   if (supabaseClient) {
     await supabaseClient.auth.signOut();
@@ -772,8 +784,9 @@ function hydrateSession() {
   }
 
   if (els.logoutButton) {
-    els.logoutButton.disabled = !state.currentUser;
-    els.logoutButton.setAttribute("aria-disabled", String(!state.currentUser));
+    els.logoutButton.disabled = false;
+    els.logoutButton.removeAttribute("aria-disabled");
+    els.logoutButton.textContent = state.currentUser ? "Se d\u00e9connecter" : "Se connecter";
   }
 
   renderProgram();
@@ -1014,7 +1027,7 @@ function hydrateProjectSavePanel(activityId) {
   if (!activityId) return;
 
   if (!state.currentUser) {
-    setProjectSaveStatus(activityId, "Connecte-toi depuis l’accueil pour sauvegarder ton projet Scratch.");
+    setProjectSaveStatus(activityId, "Connecte-toi pour sauvegarder ton projet Scratch.");
     return;
   }
 
@@ -1058,7 +1071,7 @@ function base64ToArrayBuffer(base64) {
 }
 
 els.loginForm?.addEventListener("submit", login);
-els.logoutButton?.addEventListener("click", logout);
+els.logoutButton?.addEventListener("click", handleAuthButton);
 els.quizOptionsList.forEach((quizOptions) => {
   quizOptions.addEventListener("click", handleQuizClick);
 });
