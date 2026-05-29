@@ -1809,7 +1809,7 @@ footer {
 
 .progress-table {
   width: 100%;
-  min-width: 980px;
+  min-width: 1320px;
   border-collapse: collapse;
   background: #fff;
 }
@@ -1999,4 +1999,14 @@ footer {
 
 .admin-project-validate:hover:not(:disabled) {
   background: #1f7a45;
+}
+
+.tree-subsection {
+  margin: 8px 0 2px;
+  padding-left: 6px;
+  color: var(--muted);
+  font-size: 0.78rem;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
 }

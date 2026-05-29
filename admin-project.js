@@ -9,6 +9,9 @@ const adminProjectActivities = {
   "activite-1": "Activit\u00e9 1",
   "activite-2": "Activit\u00e9 2",
   "activite-3": "Activit\u00e9 3",
+  "activite-4": "Activit\u00e9 4",
+  "activite-5": "Activit\u00e9 5",
+  "activite-6": "Activit\u00e9 6",
 };
 
 const adminProjectEls = {
