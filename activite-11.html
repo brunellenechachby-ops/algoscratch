@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>AlgoScratch &mdash; Si ... alors ... &middot; Activit&eacute; 11</title>
+  <link rel="stylesheet" href="styles.css?v=20260529-8">
+</head>
+<body>
+  <header class="site-header"><a class="brand" href="index.html" aria-label="AlgoScratch accueil"><span class="brand-mark">AS</span><span>AlgoScratch</span></a><div class="session-actions"><div class="session-pill" id="session-pill">Mode d&eacute;couverte</div><button class="logout-button" id="logout-button" type="button">Se connecter</button></div></header>
+  <main class="page-main">
+    <section class="learning-layout">
+      <aside class="course-sidebar" aria-label="Arborescence du cours">
+        <button class="sidebar-toggle" id="sidebar-toggle" type="button" aria-expanded="true"><span>Masquer</span></button>
+        <nav class="course-tree">
+          <h2>Parcours</h2>
+          <ol>
+            <li class="tree-home"><a href="index.html">Accueil</a></li>
+            <li class="tree-group tree-notebook active">
+              <span>I</span>
+              <div>
+                <strong>Activit&eacute;s Scratch</strong>
+                <button class="tree-section-toggle" type="button" data-tree-toggle="premiers-pas" aria-expanded="false" aria-controls="premiers-pas-items">Premiers pas</button>
+                <div class="tree-subitems" id="premiers-pas-items" hidden>
+                  <a class="tree-subitem" href="activite-1.html" data-activity-id="activite-1">Activit&eacute; 1</a>
+                  <a class="tree-subitem" href="activite-2.html" data-activity-id="activite-2">Activit&eacute; 2</a>
+                  <a class="tree-subitem" href="activite-3.html" data-activity-id="activite-3">Activit&eacute; 3</a>
+                  <a class="tree-subitem" href="bilan-premiers-pas.html">Bilan</a>
+                </div>
+                <button class="tree-section-toggle" type="button" data-tree-toggle="repeter" aria-expanded="false" aria-controls="repeter-items">R&eacute;p&eacute;ter</button>
+                <div class="tree-subitems" id="repeter-items" hidden>
+                  <a class="tree-subitem" href="activite-4.html" data-activity-id="activite-4">Activit&eacute; 4</a>
+                  <a class="tree-subitem" href="activite-5.html" data-activity-id="activite-5">Activit&eacute; 5</a>
+                  <a class="tree-subitem" href="activite-6.html" data-activity-id="activite-6">Activit&eacute; 6</a>
+                  <a class="tree-subitem" href="bilan-repeter.html">Bilan</a>
+                </div>
+                <button class="tree-section-toggle" type="button" data-tree-toggle="coordonnees" aria-expanded="false" aria-controls="coordonnees-items">Coordonn&eacute;es (x ; y)</button>
+                <div class="tree-subitems" id="coordonnees-items" hidden>
+                  <a class="tree-subitem" href="activite-7.html" data-activity-id="activite-7">Activit&eacute; 7</a>
+                  <a class="tree-subitem" href="activite-8.html" data-activity-id="activite-8">Activit&eacute; 8</a>
+                  <a class="tree-subitem" href="activite-9.html" data-activity-id="activite-9">Activit&eacute; 9</a>
+                  <a class="tree-subitem" href="activite-10.html" data-activity-id="activite-10">Activit&eacute; 10</a>
+                  <a class="tree-subitem" href="bilan-coordonnees.html">Bilan</a>
+                </div>
+                <button class="tree-section-toggle active-section" type="button" data-tree-toggle="conditions" aria-expanded="true" aria-controls="conditions-items">Si ... alors ...</button>
+                <div class="tree-subitems" id="conditions-items">
+                  <a class="tree-subitem active" href="activite-11.html" data-activity-id="activite-11">Activit&eacute; 11</a>
+                  <a class="tree-subitem" href="activite-12.html" data-activity-id="activite-12">Activit&eacute; 12</a>
+                  <a class="tree-subitem" href="activite-13.html" data-activity-id="activite-13">Activit&eacute; 13</a>
+                  <a class="tree-subitem" href="bilan-conditions.html">Bilan</a>
+                </div>
+              </div>
+            </li>
+            <li class="tree-group tree-notebook"><span>II</span><div><strong>&Eacute;nigmes Scratch</strong></div></li>
+            <li class="tree-group tree-interactive"><span>III</span><div><strong>Activit&eacute;s sur feuilles</strong></div></li>
+            <li class="tree-group tree-interactive"><span>IV</span><div><strong>&Eacute;nigmes sur feuilles</strong></div></li>
+          </ol>
+        </nav>
+      </aside>
+      <div class="lesson-workspace">
+        <nav class="lesson-topbar" aria-label="Navigation de la le&ccedil;on"><ol class="breadcrumbs"><li>Activit&eacute;s Scratch</li><li>Si ... alors ...</li><li>Activit&eacute; 11</li></ol><div class="activity-stepper" aria-label="Navigation de la sous-partie"><a class="active" aria-current="step" href="activite-11.html">11</a><span></span><a href="activite-12.html">12</a><span></span><a href="activite-13.html">13</a><span></span><a href="bilan-conditions.html">Bilan</a></div></nav>
+        <article class="notebook-page">
+          <header class="lesson-header"><div><p class="eyebrow">Partie I &middot; Le&ccedil;on 4</p><h2>Si ... alors ...</h2></div><span class="lesson-badge">Notebook Scratch</span></header>
+          <section class="cell cell-course"><p class="cell-label">Objectif</p><h3>Choisir la bonne orientation initiale.</h3></section>
+          <section class="cell cell-activity"><p class="cell-label">Activit&eacute;</p><h3>Atteins le disque rouge</h3><p>Scratch se d&eacute;place et rebondit sur les bords. Il doit atteindre le disque rouge sans toucher les rectangles bleus. Pour cela, il faut choisir la bonne orientation initiale.</p><div class="activity-support-grid"><figure class="drawing-card"><svg viewBox="0 0 420 260" role="img" aria-label="Exemple d'obstacles"><rect x="25" y="25" width="370" height="210" rx="14" fill="#f8fafc" stroke="#94a3b8" stroke-width="3"/><rect x="135" y="45" width="35" height="130" rx="5" fill="#0057ff"/><rect x="230" y="105" width="40" height="105" rx="5" fill="#0057ff"/><rect x="280" y="45" width="35" height="80" rx="5" fill="#0057ff"/><circle cx="345" cy="185" r="20" fill="#e5484d"/><circle cx="70" cy="130" r="13" fill="#f59e0b" stroke="#111827" stroke-width="2"/><path d="M70 130 C145 65 230 245 345 185" fill="none" stroke="#10b981" stroke-width="4" stroke-dasharray="8 8"/><text x="45" y="155" fill="#111827" font-size="14" font-weight="700">d&eacute;part</text><text x="318" y="222" fill="#111827" font-size="14" font-weight="700">cible</text></svg><figcaption>Exemple d&rsquo;obstacles</figcaption></figure></div></section>
+          <section class="cell cell-steps"><p class="cell-label">&Eacute;tapes</p><ol><li>Scratch part de <strong>x = âˆ’200, y = 0</strong>. Il s&rsquo;oriente selon un certain angle, par exemple <strong>30&deg;</strong>. Puis, dans une boucle <strong>r&eacute;p&eacute;ter ind&eacute;finiment</strong>, il avance un peu, par exemple 5 pas, et il <strong>rebondit si le bord est atteint</strong>.</li><li>Compl&egrave;te la boucle pour tester si Scratch touche une zone color&eacute;e : si Scratch touche une zone rouge, c&rsquo;est gagn&eacute; et on arr&ecirc;te le programme ; si Scratch touche une zone bleue, c&rsquo;est perdu et on arr&ecirc;te aussi le programme.</li><li>Dessine des obstacles en bleu et une cible en rouge sur l&rsquo;arri&egrave;re-plan. Cherche l&rsquo;angle de d&eacute;part qui permet d&rsquo;&eacute;viter les obstacles et d&rsquo;atteindre la cible.</li></ol></section>
+          <section class="cell cell-blocks"><p class="cell-label">Nouveaux blocs utiles</p><div class="useful-blocks"><span class="scratch-block motion">rebondir si le bord est atteint</span><span class="scratch-block control">si couleur touch&eacute;e ? alors</span><span class="scratch-block control">stop tout</span></div></section>
+          <section class="cell cell-activity"><p class="cell-label">Projet Scratch</p><div class="project-save-panel" data-project-save-panel data-activity-id="activite-11"><div><strong>Projet Scratch de cette activit&eacute;</strong><span>Sauvegarde ton travail pour pouvoir le retrouver plus tard.</span></div><div class="project-save-actions"><button class="primary-button" type="button" data-project-save>Sauvegarder mon projet</button><button class="secondary-button" type="button" data-project-load>Recharger mon projet</button></div><p class="project-save-status" data-project-save-status>Aucun projet sauvegard&eacute; pour cette activit&eacute;.</p></div>
+            <div class="editor-frame-wrap lesson-editor"><iframe class="editor-frame" data-scratch-editor data-activity-id="activite-11" title="&Eacute;diteur Scratch de l'activit&eacute; 11" src="http://localhost:8601/" loading="lazy" allow="autoplay; microphone; camera"></iframe></div>
+            <p class="editor-status" data-editor-status role="status">Chargement de l&rsquo;&eacute;diteur Scratch&hellip;</p></section>
+          <section class="lesson-actions dual-actions"><a class="secondary-link" href="bilan-coordonnees.html">Revenir</a><a class="primary-link" href="activite-12.html">Continuer</a></section>
+        </article>
+      </div>
+    </section>
+  </main>
+  <footer><p>Chapitre 1 &middot; Si ... alors ... &middot; Activit&eacute; 11</p></footer>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="supabase-config.js"></script>
+  <script src="app.js?v=20260530-1"></script>
+</body>
+</html>

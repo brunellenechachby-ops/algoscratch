@@ -1,4 +1,4 @@
-﻿const STORAGE_KEY = "algoscratch-prototype";
+const STORAGE_KEY = "algoscratch-prototype";
 const SERVER_STATE_ENDPOINT = "/api/state";
 const SERVER_STORAGE_ENABLED = ["localhost", "127.0.0.1"].includes(window.location.hostname);
 const SCRATCH_EDITOR_LOCAL_URL = "http://localhost:8601/";
@@ -39,12 +39,15 @@ const activityDestinations = {
   "activite-8": {href: "activite-8.html", number: "8"},
   "activite-9": {href: "activite-9.html", number: "9"},
   "activite-10": {href: "activite-10.html", number: "10"},
+  "activite-11": {href: "activite-11.html", number: "11"},
+  "activite-12": {href: "activite-12.html", number: "12"},
+  "activite-13": {href: "activite-13.html", number: "13"},
 };
 
 const defaultState = {
   currentUser: "",
   sidebarCollapsed: false,
-  treeSections: {"premiers-pas": true, repeter: true},
+  treeSections: {"premiers-pas": true, repeter: true, coordonnees: true, conditions: true},
   users: {},
 };
 
@@ -518,7 +521,7 @@ function toggleTreeSection(event) {
   const sectionId = event.currentTarget.dataset.treeToggle;
   if (!sectionId) return;
 
-  state.treeSections ||= {"premiers-pas": true, repeter: true};
+  state.treeSections ||= {"premiers-pas": true, repeter: true, coordonnees: true, conditions: true};
   state.treeSections[sectionId] = state.treeSections[sectionId] === false;
   saveState({ syncServer: false });
   renderSidebar();

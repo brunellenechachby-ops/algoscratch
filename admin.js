@@ -11,6 +11,9 @@ const adminActivities = {
   "activite-8": "Activit\u00e9 8",
   "activite-9": "Activit\u00e9 9",
   "activite-10": "Activit\u00e9 10",
+  "activite-11": "Activit\u00e9 11",
+  "activite-12": "Activit\u00e9 12",
+  "activite-13": "Activit\u00e9 13",
 };
 
 const adminBilans = {
@@ -26,6 +29,10 @@ const adminBilans = {
     label: "Bilan Coordonn\u00e9es",
     quizIds: ["activite-7"],
   },
+  "bilan-conditions": {
+    label: "Bilan Conditions",
+    quizIds: ["activite-11", "activite-12", "activite-13"],
+  },
 };
 
 const adminPageSequences = {
@@ -37,6 +44,9 @@ const adminPageSequences = {
   ],
   coordonnees: [
     {activities: ["activite-7", "activite-8", "activite-9", "activite-10"], bilan: "bilan-coordonnees"},
+  ],
+  conditions: [
+    {activities: ["activite-11", "activite-12", "activite-13"], bilan: "bilan-conditions"},
   ],
 };
 
