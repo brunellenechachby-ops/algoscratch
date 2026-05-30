@@ -1,4 +1,4 @@
-﻿:root {
+:root {
   --ink: #172033;
   --muted: #5f6b85;
   --paper: #f7f8fc;
@@ -689,6 +689,14 @@ span {
   margin-top: 18px;
 }
 
+.activity-support-grid.wide-figure {
+  grid-template-columns: minmax(420px, 1fr) minmax(220px, 300px);
+}
+
+.activity-support-grid.wide-figure .blocks-card {
+  align-self: start;
+}
+
 .drawing-card,
 .blocks-card {
   display: grid;
@@ -1045,6 +1053,10 @@ footer p {
   .activity-support-grid,
   .scratch-lab,
   .course-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .activity-support-grid.wide-figure {
     grid-template-columns: 1fr;
   }
 
