@@ -349,7 +349,7 @@ span {
 }
 
 .sidebar-toggle::before {
-  content: "â€¹";
+  content: "\2039";
   margin-right: 8px;
   font-size: 1.15rem;
 }
@@ -424,7 +424,7 @@ span {
 }
 
 .tree-section-title::before {
-  content: "â†³ ";
+  content: "\21B3 ";
   color: var(--muted);
   font-weight: 800;
 }
@@ -485,7 +485,7 @@ span {
 }
 
 .learning-layout.sidebar-collapsed .sidebar-toggle::before {
-  content: "â€º";
+  content: "\203A";
   margin-right: 0;
 }
 
@@ -524,7 +524,7 @@ span {
 }
 
 .breadcrumbs li:not(:last-child)::after {
-  content: "â€º";
+  content: "\203A";
   margin-left: 8px;
 }
 
